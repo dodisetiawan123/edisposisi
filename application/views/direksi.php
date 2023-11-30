@@ -1,9 +1,9 @@
 
-<?php include 'layouts/head-main.php'; ?>
+<?php include 'd_layouts/head-main.php'; ?>
 
 <head>
     <title>List surat | E-disposisi</title>
-    <?php include 'layouts/head.php'; ?>
+    <?php include 'd_layouts/head.php'; ?>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css') ?>">
       <!-- DataTables -->
     <link href="<?php echo base_url('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') ?>" rel="stylesheet" type="text/css" />
@@ -13,15 +13,15 @@
     <link href="<?php echo base_url('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') ?>" rel="stylesheet" type="text/css" />
 
     
-    <?php include 'layouts/head-style.php'; ?>
+    <?php include 'd_layouts/head-style.php'; ?>
 </head>
 
-<?php include 'layouts/body.php'; ?>
+<?php include 'd_layouts/body.php'; ?>
 
 <!-- Begin page -->
 <div id="layout-wrapper">
 
-    <?php include 'layouts/vertical-menu.php'; ?>
+    <?php include 'd_layouts/horizontal-menu.php'; ?>
 
     <!-- ============================================================== -->
     <!-- Start right Content here -->
@@ -34,14 +34,8 @@
                 <!-- start page title -->
                 <div class="row">
                     <div class="col-12">
-                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0 font-size-18">Surat masuk</h4>
-
-                            <div class="page-title-right">
-                                <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Surat masuk</a></li>
-                                </ol>
-                            </div>
+                        <div class="page-title-box d-sm-flex align-items-center justify-content-center">
+                            <h4 class="mb-sm-0 font-size-18">LIST DOKUMEN</h4>
 
                         </div>
                     </div>
@@ -51,18 +45,16 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-header">
-                                    <button class="btn btn-secondary btn-success waves-effect btn-label waves-light m-1" tabindex="0" aria-controls="tech-companies-1" type="button" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><span><i class="bx bx-plus-medical label-icon"></i> Tambah Dokumen</span></button>
-                            </div>
+                            
                             <div class="card-body">
 
                                 <table id="datatable" class="table table-bordered table-hover dt-responsive  nowrap w-100">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>No Agenda</th>
-                                            <th>Diterima Tanggal</th>
-                                            <th>Surat dari</th>
-                                            <th>Perihal</th>
+                                            <th>No</th>
+                                            <th>Detail</th>
+                                            <th>Status</th>
+                                            <th>Lampiran</th>
                                             <th>Pilihan</th>
                                         </tr>
                                     </thead>
@@ -70,16 +62,45 @@
 
                                     <tbody>
                                         <tr style="cursor: pointer;">
-                                            <td>1865</td>
-                                            <td>22 November 2023</td>
-                                            <td>PT Soltius Indonesia</td>
-                                            <td>Acceptance Certificate</td>
+                                            <td>1</td>
                                             <td>
-                                                <button type="button" class="btn btn-light btn-sm">Disposisi</button>
+                                                Pengirim : <strong>PT Soltius Indonesia </strong><br>
+                                                No Surat : <strong>XX1/BRT/NO/1 </strong> <br>
+                                                Tanggal  : <strong>22 Desember 2023</strong><br>
+                                                Perihal  : <strong>Acceptanble Certificate</strong>
+                                            </td>
+                                            <th>Accepted</th>
+                                            <td>
+                                                <button type="button" class="btn btn-light btn-sm">Preview</button></td>
+                                            <td>
+                                                <div>
+                                                    <div class="btn-group btn-group-example mb-3" role="group">
+                                                        <button type="button" class="btn btn-success w-xs">Accept</button>
+                                                        <button type="button" class="btn btn-danger w-xs">Reject</button>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
-
-                                        
+                                        <tr style="cursor: pointer;">
+                                            <td>2</td>
+                                            <td>
+                                                Pengirim : <strong>PT Soltius Indonesia </strong><br>
+                                                No Surat : <strong>XX1/BRT/NO/1 </strong> <br>
+                                                Tanggal  : <strong>22 Desember 2023</strong><br>
+                                                Perihal  : <strong>Acceptanble Certificate</strong>
+                                            </td>
+                                            <th>Accepted</th>
+                                            <td>
+                                                <button type="button" class="btn btn-light btn-sm">Preview</button></td>
+                                            <td>
+                                                <div>
+                                                    <div class="btn-group btn-group-example mb-3" role="group">
+                                                        <button type="button" class="btn btn-success w-xs">Accept</button>
+                                                        <button type="button" class="btn btn-danger w-xs">Reject</button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
 
