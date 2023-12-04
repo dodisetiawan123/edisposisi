@@ -84,28 +84,11 @@
                                                 <a href="<?=site_url('admin/viewfile/'.'Lampiran.pdf')?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-secondary btn-sm">Edit</button>
-                                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Lanjutkan Dokumen</button>
+                                                <button type="button" class="btn btn-secondary btn-md">Edit</button>
+                                                <button type="button" class="btn btn-success btn-md" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Lanjutkan Dokumen</button>
                                             </td>
                                         </tr>
 
-                                        <tr style="cursor: pointer;">
-                                            <td>1</td>
-                                            <td>
-                                                Pengirim : <strong>PT Soltius Indonesia </strong><br>
-                                                No Surat : <strong>XX1/BRT/NO/1 </strong> <br>
-                                                Tanggal  : <strong>22 Desember 2023</strong><br>
-                                                Perihal  : <strong>Acceptanble Certificate</strong>
-                                            </td>
-                                            <td>Process</td>
-                                            <td>
-                                                <a href="<?=site_url('admin/viewfile/'.'Lampiran.pdf')?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-secondary btn-sm">Edit</button>
-                                                <button type="button" class="btn btn-success btn-sm">Lanjutkan Dokumen</button>
-                                            </td>
-                                        </tr>
 
                                         
                                     </tbody>
@@ -165,7 +148,7 @@
                                                                                 <div class="row mb-4">
                                                                                     <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Tanggal</label>
                                                                                     <div class="col-sm-9">
-                                                                                        <input type="text" class="form-control" id="horizontal-firstname-input">
+                                                                                        <input class="form-control" type="date" value="<?php echo date("Y-m-d"); ?>" id="example-date-input">
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row mb-4">

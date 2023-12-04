@@ -53,8 +53,9 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Detail</th>
-                                            <th>Status</th>
                                             <th>Lampiran</th>
+                                            <th>Requestor</th>
+                                            <th>Catatan</th>
                                             <th>Pilihan</th>
                                         </tr>
                                     </thead>
@@ -69,38 +70,39 @@
                                                 Tanggal  : <strong>22 Desember 2023</strong><br>
                                                 Perihal  : <strong>Acceptanble Certificate</strong>
                                             </td>
-                                            <th>Accepted</th>
+                                            <th> <a href="<?=site_url('direksi/viewfile/'.'Lampiran.pdf')?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
+                                            </th>
                                             <td>
-                                                <button type="button" class="btn btn-light btn-sm">Preview</button></td>
+                                               Direktur Utama
+                                            </td>
                                             <td>
-                                                <div>
-                                                    <div class="btn-group btn-group-example mb-3" role="group">
-                                                        <button type="button" class="btn btn-success w-xs">Accept</button>
-                                                        <button type="button" class="btn btn-danger w-xs">Reject</button>
-                                                    </div>
-                                                </div>
+                                                Segera Di tindaklanjuti
+                                            </td>
+                                             <td>
+                                               <button type="button" class="btn btn-success btn-md">Accept</button>
                                             </td>
                                         </tr>
                                         <tr style="cursor: pointer;">
-                                            <td>2</td>
+                                            <td>1</td>
                                             <td>
-                                                Pengirim : <strong>PT Soltius Indonesia </strong><br>
+                                                Pengirim : <strong>PT Prima Indonesia </strong><br>
                                                 No Surat : <strong>XX1/BRT/NO/1 </strong> <br>
-                                                Tanggal  : <strong>22 Desember 2023</strong><br>
-                                                Perihal  : <strong>Acceptanble Certificate</strong>
+                                                Tanggal  : <strong>11 Desember 2023</strong><br>
+                                                Perihal  : <strong>Pengumuman Tender</strong>
                                             </td>
-                                            <th>Accepted</th>
+                                            <th> <a href="<?=site_url('direksi/viewfile/'.'Lampiran.pdf')?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
+                                            </th>
                                             <td>
-                                                <button type="button" class="btn btn-light btn-sm">Preview</button></td>
+                                              Direktur Operasi
+                                           </td>
                                             <td>
-                                                <div>
-                                                    <div class="btn-group btn-group-example mb-3" role="group">
-                                                        <button type="button" class="btn btn-success w-xs">Accept</button>
-                                                        <button type="button" class="btn btn-danger w-xs">Reject</button>
-                                                    </div>
-                                                </div>
+                                              Eksekusi
+                                            </td>
+                                             <td>
+                                               <button type="button" class="btn btn-success btn-md">Accept</button>
                                             </td>
                                         </tr>
+                                       
                                     </tbody>
                                 </table>
 

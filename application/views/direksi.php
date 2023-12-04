@@ -75,8 +75,8 @@
                                             <td>
                                                 <div>
                                                     <div class="btn-group btn-group-example mb-3" role="group">
-                                                        <button type="button" class="btn btn-success w-xs">Accept</button>
-                                                        <button type="button" class="btn btn-danger w-xs">Reject</button>
+                                                        <button type="button" class="btn btn-success w-xs" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Accept</button>
+                                                        <button type="button" class="btn btn-danger w-xs" data-bs-toggle="modal" data-bs-target="#reject">Reject</button>
                                                     </div>
                                                 </div>
                                             </td>
@@ -98,80 +98,61 @@
         <?php include 'layouts/footer.php'; ?>
     </div>
     <!-- end main content-->
-    <!--  Extra Large modal example -->
-                                    <div class="modal fade bs-example-modal-lg" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg">
+     <!-- Static Backdrop Modal -->
+                                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                                             <div class="modal-content">
-                                                <div class="modal-header text-center">
-                                                    <h5 class="modal-title" id="myExtraLargeModalLabel">Tambah Dokumen</h5>
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="staticBackdropLabel">Lanjutkan Dokumen</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form enctype="multipart/form-data" name="karyawan" accept-charset="utf-8" method="post" action="<?php echo site_url('admin/insertdata') ?>" onsubmit="return validateForm()">
-                                                     <div class="row">
-                                                        <div class="col-lg-12">
-                                                            <div class="card">
-                                                                <div class="card-body">
-                                                                    <div class="row">
-                                                                         <div class="col-lg-12 ms-lg-auto">
-                                                                        <div class="mt-4 mt-lg-0">
-                                                                            <form>
-                                                                                <div class="row mb-4">
-                                                                                    <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Pengirim</label>
-                                                                                    <div class="col-sm-9">
-                                                                                        <input type="text" class="form-control" id="horizontal-firstname-input">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="row mb-4">
-                                                                                    <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">No. Surat</label>
-                                                                                    <div class="col-sm-9">
-                                                                                        <input type="text" class="form-control" id="horizontal-firstname-input">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="row mb-4">
-                                                                                    <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">No. Agenda</label>
-                                                                                    <div class="col-sm-9">
-                                                                                        <input type="text" class="form-control" id="horizontal-firstname-input">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="row mb-4">
-                                                                                    <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Tanggal</label>
-                                                                                    <div class="col-sm-9">
-                                                                                        <input type="text" class="form-control" id="horizontal-firstname-input">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="row mb-4">
-                                                                                    <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Perihal</label>
-                                                                                    <div class="col-sm-9">
-                                                                                        <textarea type="text" class="form-control" id="horizontal-firstname-input" rows="3"></textarea>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="row justify-content-end">
-                                                                                    <div class="col-sm-9">
-                                                                                        <div>
-                                                                                            <button type="submit" class="btn btn-primary w-md">Submit</button>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </form>
-                                                                        </div>
-                                                                    </div>
-                                                                        
-                                                                    </div>
-                                                                    
-                                                                </div>
-                                                                <!-- end card body -->
-                                                            </div>
-                                                            <!-- end card -->
-                                                        </div>
-                                                        <!-- end col -->
+                                                    <form>
+                                                    <div class="form-group mb-3">
+                                                        <label for="exampleFormControlTextarea1">Keterangan</label>
+                                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                                                     </div>
-                                                    </form>
-                                                    <!-- end row -->
+                                                    <div class="form-group">
+                                                    <label for="exampleFormControlSelect1">Diteruskan ke- </label>
+                                                    <select class="form-control" id="exampleFormControlSelect1">
+                                                      <option>GM Biro Keuangan dan Akuntansi</option>
+                                                      <option>GM Biro Human Capital</option>
+                                                      <option>GM Biro Man. Suply Chain</option>
+                                                      <option>GM Biro Pengembangan Usaha</option>
+                                                      <option>GM Biro Hukum</option>
+                                                    </select>
+                                                  </div>
+                                                  </form>
                                                 </div>
-                                            </div><!-- /.modal-content -->
-                                        </div><!-- /.modal-dialog -->
-                                    </div><!-- /.modal -->
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Lanjutkan</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" id="reject" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="staticBackdropLabel">Reject Dokumen</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form>
+                                                    <div class="form-group mb-3">
+                                                        <label for="exampleFormControlTextarea1">Keterangan</label>
+                                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                    </div>
+                                                  </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-danger">Reject</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
 </div>
 <!-- END layout-wrapper -->
