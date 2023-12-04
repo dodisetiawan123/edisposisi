@@ -2,7 +2,7 @@
 <?php include 'layouts/head-main.php'; ?>
 
 <head>
-    <title>List surat | E-disposisi</title>
+    <title>Sekper | E-disposisi</title>
     <?php include 'layouts/head.php'; ?>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css') ?>">
       <!-- DataTables -->
@@ -11,8 +11,10 @@
 
     <!-- Responsive datatable examples -->
     <link href="<?php echo base_url('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') ?>" rel="stylesheet" type="text/css" />
-
     
+    
+    <!-- dropzone css -->
+    <link href="<?php echo base_url('assets/libs/dropzone/min/dropzone.min.css') ?>" rel="stylesheet" type="text/css" />
     <?php include 'layouts/head-style.php'; ?>
 </head>
 
@@ -59,35 +61,52 @@
                                 <table id="datatable" class="table table-bordered table-hover dt-responsive  nowrap w-100">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>No Agenda</th>
-                                            <th>Diterima Tanggal</th>
-                                            <th>Surat dari</th>
-                                            <th>Perihal</th>
-                                            <th>Pilihan</th>
+                                            <th>No</th>
+                                            <th>Detail</th>
+                                            <th>Status</th>
+                                            <th>Lampiran</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
 
 
                                     <tbody>
                                         <tr style="cursor: pointer;">
-                                            <td>1865</td>
-                                            <td>22 November 2023</td>
-                                            <td>PT Soltius Indonesia</td>
-                                            <td>Acceptance Certificate</td>
+                                            <td>1</td>
                                             <td>
-                                                <button type="button" class="btn btn-light btn-sm">Disposisi</button>
+                                                Pengirim : <strong>PT Soltius Indonesia </strong><br>
+                                                No Surat : <strong>XX1/BRT/NO/1 </strong> <br>
+                                                Tanggal  : <strong>22 Desember 2023</strong><br>
+                                                Perihal  : <strong>Acceptanble Certificate</strong>
+                                            </td>
+                                            <td>Process</td>
+                                            <td>
+                                                <a href="<?=site_url('admin/viewfile/'.'Lampiran.pdf')?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-secondary btn-sm">Edit</button>
+                                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Lanjutkan Dokumen</button>
                                             </td>
                                         </tr>
 
                                         <tr style="cursor: pointer;">
-                                            <td>1865</td>
-                                            <td>22 November 2023</td>
-                                            <td>PT Soltius Indonesia</td>
-                                            <td>Acceptance Certificate</td>
+                                            <td>1</td>
                                             <td>
-                                                <button type="button" class="btn btn-light btn-sm">Disposisi</button>
+                                                Pengirim : <strong>PT Soltius Indonesia </strong><br>
+                                                No Surat : <strong>XX1/BRT/NO/1 </strong> <br>
+                                                Tanggal  : <strong>22 Desember 2023</strong><br>
+                                                Perihal  : <strong>Acceptanble Certificate</strong>
+                                            </td>
+                                            <td>Process</td>
+                                            <td>
+                                                <a href="<?=site_url('admin/viewfile/'.'Lampiran.pdf')?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-secondary btn-sm">Edit</button>
+                                                <button type="button" class="btn btn-success btn-sm">Lanjutkan Dokumen</button>
                                             </td>
                                         </tr>
+
                                         
                                     </tbody>
                                 </table>
@@ -96,6 +115,7 @@
                         </div>
                     </div> <!-- end col -->
                 </div> <!-- end row -->
+
 
             </div>
             <!-- container-fluid -->
@@ -154,10 +174,16 @@
                                                                                         <textarea type="text" class="form-control" id="horizontal-firstname-input" rows="3"></textarea>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div class="row justify-content-end">
+                                                                                 <div class="row mb-4">
+                                                                                    <label for="formfile" class="col-sm-3 col-form-label">Upload scan</label>
                                                                                     <div class="col-sm-9">
-                                                                                        <div>
-                                                                                            <button type="submit" class="btn btn-primary w-md">Submit</button>
+                                                                                        <input type="file" id="formFile" class="form-control">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row justify-content-end">
+                                                                                    <div class="col-sm-9" >
+                                                                                        <div class=".text-left">
+                                                                                            <button type="submit" class="btn btn-success w-md">Submit dokumen</button>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -180,6 +206,33 @@
                                             </div><!-- /.modal-content -->
                                         </div><!-- /.modal-dialog -->
                                     </div><!-- /.modal -->
+
+                                     <!-- Static Backdrop Modal -->
+                                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="staticBackdropLabel">Lanjutkan Dokumen</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                    <label for="exampleFormControlSelect1">Pilih User</label>
+                                                    <select class="form-control" id="exampleFormControlSelect1">
+                                                      <option>Direktur Utama</option>
+                                                      <option>Direktur Operasi</option>
+                                                      <option>Direktur Keuangan</option>
+                                                      <option>Direktur Pemasaran</option>
+                                                    </select>
+                                                  </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Lanjutkan</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
 </div>
 <!-- END layout-wrapper -->
@@ -211,6 +264,8 @@
 <!-- Datatable init js -->
 <script src="<?php echo base_url('assets/js/pages/datatables.init.js') ?>"></script>
 
+<!-- dropzone js -->
+<script src="<?php echo base_url('assets/libs/dropzone/min/dropzone.min.js') ?>"></script>
 <!-- App js -->
 <script src="<?php echo base_url('assets/js/app.js') ?>"></script>
 

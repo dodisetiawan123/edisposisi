@@ -1,9 +1,9 @@
 
-<?php include 'd_layouts/head-main.php'; ?>
+<?php include 'gm_layouts/head-main.php'; ?>
 
 <head>
-    <title>Direksi | E-disposisi</title>
-    <?php include 'd_layouts/head.php'; ?>
+    <title>GM Biro | E-disposisi</title>
+    <?php include 'gm_layouts/head.php'; ?>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css') ?>">
       <!-- DataTables -->
     <link href="<?php echo base_url('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') ?>" rel="stylesheet" type="text/css" />
@@ -13,15 +13,15 @@
     <link href="<?php echo base_url('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') ?>" rel="stylesheet" type="text/css" />
 
     
-    <?php include 'd_layouts/head-style.php'; ?>
+    <?php include 'gm_layouts/head-style.php'; ?>
 </head>
 
-<?php include 'd_layouts/body.php'; ?>
+<?php include 'gm_layouts/body.php'; ?>
 
 <!-- Begin page -->
 <div id="layout-wrapper">
 
-    <?php include 'd_layouts/horizontal-menu.php'; ?>
+    <?php include 'gm_layouts/horizontal-menu.php'; ?>
 
     <!-- ============================================================== -->
     <!-- Start right Content here -->
@@ -62,6 +62,26 @@
 
                                     <tbody>
                                         <tr style="cursor: pointer;">
+                                            <td>1</td>
+                                            <td>
+                                                Pengirim : <strong>PT Soltius Indonesia </strong><br>
+                                                No Surat : <strong>XX1/BRT/NO/1 </strong> <br>
+                                                Tanggal  : <strong>22 Desember 2023</strong><br>
+                                                Perihal  : <strong>Acceptanble Certificate</strong>
+                                            </td>
+                                            <th>Accepted</th>
+                                            <td>
+                                                <button type="button" class="btn btn-light btn-sm">Preview</button></td>
+                                            <td>
+                                                <div>
+                                                    <div class="btn-group btn-group-example mb-3" role="group">
+                                                        <button type="button" class="btn btn-success w-xs">Accept</button>
+                                                        <button type="button" class="btn btn-danger w-xs">Reject</button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr style="cursor: pointer;">
                                             <td>2</td>
                                             <td>
                                                 Pengirim : <strong>PT Soltius Indonesia </strong><br>
@@ -71,7 +91,7 @@
                                             </td>
                                             <th>Accepted</th>
                                             <td>
-                                                <a href="<?=site_url('direksi/viewfile/'.'Lampiran.pdf')?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
+                                                <button type="button" class="btn btn-light btn-sm">Preview</button></td>
                                             <td>
                                                 <div>
                                                     <div class="btn-group btn-group-example mb-3" role="group">
@@ -177,11 +197,11 @@
 <!-- END layout-wrapper -->
 
 <!-- Right Sidebar -->
-<?php include 'd_layouts/right-sidebar.php'; ?>
+<?php include 'gm_layouts/right-sidebar.php'; ?>
 <!-- /Right-bar -->
 
 <!-- JAVASCRIPT -->
-<?php include 'd_layouts/vendor-scripts.php'; ?>
+<?php include 'gm_layouts/vendor-scripts.php'; ?>
 
 <!-- Required datatable js -->
 <script src="<?php echo base_url('assets/libs/datatables.net/js/jquery.dataTables.min.js') ?>"></script>

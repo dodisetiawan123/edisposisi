@@ -85,10 +85,15 @@ class Auth extends CI_Controller
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
 				redirect('admin/list_surat', 'refresh');
 				
-				}else {
+				}else if ($this->ion_auth->get_users_groups()->row()->id == 2) {
+					$this->session->set_flashdata('message', $this->ion_auth->messages());
+					redirect('direksi/list_surat', 'refresh');
+				}elseif ($this->ion_auth->get_users_groups()->row()->id == 3) {
+					$this->session->set_flashdata('message', $this->ion_auth->messages());
+					redirect('general/list_surat', 'refresh');
+				}else{
 					
-				$this->session->set_flashdata('message', $this->ion_auth->messages());
-				redirect('direksi/list_surat', 'refresh');
+				show_error('Please Contact administrator');
 
 				}
 

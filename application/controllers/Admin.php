@@ -458,7 +458,7 @@ class Admin extends CI_Controller {
 		else
 		{
 			
-			$this->load->view('list_surat');
+			$this->load->view('sekper');
 		}
 	}
 
@@ -860,6 +860,24 @@ class Admin extends CI_Controller {
 		}
 		}
 		
+	}
+
+	public function viewfile($doc_id)
+	{
+		if (!$this->ion_auth->logged_in())
+		{
+			// redirect them to the login page
+			redirect('auth/login', 'refresh');
+		}
+		else if ($this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
+		{
+		
+			$fname = $this->uri->segment(3);
+	        $tofile= realpath("filedoc/".$doc_id);
+	        header('Content-Type: application/pdf');
+	        readfile($tofile);
+
+		}
 	}
 
 }
