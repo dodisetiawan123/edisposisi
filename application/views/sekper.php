@@ -71,24 +71,25 @@
 
 
                                     <tbody>
+                                        <?php foreach ($dokumen as $data) {?>
                                         <tr style="cursor: pointer;">
                                             <td>1</td>
                                             <td>
-                                                Pengirim : <strong>PT Soltius Indonesia </strong><br>
-                                                No Surat : <strong>XX1/BRT/NO/1 </strong> <br>
-                                                Tanggal  : <strong>22 Desember 2023</strong><br>
-                                                Perihal  : <strong>Acceptanble Certificate</strong>
+                                                Pengirim : <strong><?php echo $data->nama_pengirim; ?> </strong><br>
+                                                No Surat : <strong><?php echo $data->no_surat; ?></strong> <br>
+                                                Tanggal  : <strong><?php echo $data->tanggal; ?></strong><br>
+                                                Perihal  : <strong><?php echo $data->perihal; ?></strong>
                                             </td>
-                                            <td>Process</td>
+                                            <td><?php echo $data->status; ?></td>
                                             <td>
-                                                <a href="<?=site_url('admin/viewfile/'.'Lampiran.pdf')?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
+                                                <a href="<?=site_url('admin/viewfile/'.$data->file_dokumen)?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-secondary btn-md">Edit</button>
                                                 <button type="button" class="btn btn-success btn-md" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Lanjutkan Dokumen</button>
                                             </td>
                                         </tr>
-
+                                        <?php } ?>
 
                                         
                                     </tbody>
@@ -118,7 +119,7 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form enctype="multipart/form-data" name="karyawan" accept-charset="utf-8" method="post" action="<?php echo site_url('admin/insertdata') ?>" onsubmit="return validateForm()">
+                                                    <form enctype="multipart/form-data" name="karyawan" accept-charset="utf-8" method="post" action="<?php echo site_url('admin/tambahdokumen') ?>" onsubmit="return validateForm()">
                                                      <div class="row">
                                                         <div class="col-lg-12">
                                                             <div class="card">
@@ -130,37 +131,37 @@
                                                                                 <div class="row mb-4">
                                                                                     <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Pengirim</label>
                                                                                     <div class="col-sm-9">
-                                                                                        <input type="text" class="form-control" id="horizontal-firstname-input">
+                                                                                        <input type="text" name="nama_pengirim" class="form-control" id="horizontal-firstname-input">
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row mb-4">
                                                                                     <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">No. Surat</label>
                                                                                     <div class="col-sm-9">
-                                                                                        <input type="text" class="form-control" id="horizontal-firstname-input">
+                                                                                        <input type="text" name="no_surat" class="form-control" id="horizontal-firstname-input">
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row mb-4">
-                                                                                    <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">No. Agenda</label>
+                                                                                    <label for="horizontal-firstname-input"  class="col-sm-3 col-form-label">No. Agenda</label>
                                                                                     <div class="col-sm-9">
-                                                                                        <input type="text" class="form-control" id="horizontal-firstname-input">
+                                                                                        <input type="text" name="no_agenda" class="form-control" id="horizontal-firstname-input">
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row mb-4">
                                                                                     <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Tanggal</label>
                                                                                     <div class="col-sm-9">
-                                                                                        <input class="form-control" type="date" value="<?php echo date("Y-m-d"); ?>" id="example-date-input">
+                                                                                        <input class="form-control" name="tanggal" type="date" value="<?php echo date("Y-m-d"); ?>" id="example-date-input">
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row mb-4">
                                                                                     <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Perihal</label>
                                                                                     <div class="col-sm-9">
-                                                                                        <textarea type="text" class="form-control" id="horizontal-firstname-input" rows="3"></textarea>
+                                                                                        <textarea type="text" name="perihal" class="form-control" id="horizontal-firstname-input" rows="3"></textarea>
                                                                                     </div>
                                                                                 </div>
                                                                                  <div class="row mb-4">
                                                                                     <label for="formfile" class="col-sm-3 col-form-label">Upload scan</label>
                                                                                     <div class="col-sm-9">
-                                                                                        <input type="file" id="formFile" class="form-control">
+                                                                                        <input type="file" name="file_dokumen" id="formFile" class="form-control">
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row justify-content-end">

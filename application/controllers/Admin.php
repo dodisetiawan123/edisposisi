@@ -9,6 +9,7 @@ class Admin extends CI_Controller {
 		$this->load->database();
 		$this->load->library(['ion_auth', 'form_validation']);
 		$this->load->helper(['url', 'language']);
+		$this->load->model('admin_model');
 		date_default_timezone_set('Asia/Jakarta');
 	}
 
@@ -27,8 +28,40 @@ class Admin extends CI_Controller {
 		}
 		else
 		{
-			
-			$this->load->view('sekper');
+			$this->data['dokumen'] = $this->admin_model->get_dokumen();
+			$this->load->view('sekper', $this->data);
+		}
+	}
+
+		//Data Karyawan
+	public function tambahdokumen()
+	{
+		if (!$this->ion_auth->logged_in())
+		{
+			// redirect them to the login page
+			redirect('auth/login', 'refresh');
+		}
+		else if (!$this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
+		{
+			// redirect them to the home page because they must be an administrator to view this
+			show_error('You must be an administrator to view this page.');
+		}
+		else
+		{
+			$data_dokumen = array(
+				'nama_pengirim' => $this->input->post('nama_pengirim'),
+				'no_surat' => $this->input->post('no_surat'),
+				'no_agenda' => $this->input->post('no_agenda'),
+				'tanggal' => $this->input->post('tanggal'),
+				'perihal' => $this->input->post('perihal'),
+				'status' => 'On Review',
+				'timestamp' => $this->input->post('timestamp'),
+			);
+
+			$this->admin_model->insertdokumen($data_dokumen);	
+
+            $this->session->set_flashdata('done', 'Data berhasil tersimpan');
+            redirect('admin/list_surat');
 		}
 	}
 
