@@ -206,7 +206,7 @@
                                                     <label for="exampleFormControlSelect1">Pilih User</label>
                                                     <select class="form-control" id="exampleFormControlSelect1">
                                                         <?php foreach ($users as $data) {?>
-                                                      <option><?php echo $data->first_name.' '.$data->last_name.'->'.$data->email ?></option>
+                                                      <option value=""><?php echo $data->first_name.' '.$data->last_name.'->'.$data->email ?></option>
                                                         <?php } ?>
                                                     </select>
                                                     </div>
