@@ -48,14 +48,16 @@ class Admin extends CI_Controller {
 		}
 		else
 		{
+			$namefile = $this->uploaddokumen();
 			$data_dokumen = array(
 				'nama_pengirim' => $this->input->post('nama_pengirim'),
 				'no_surat' => $this->input->post('no_surat'),
 				'no_agenda' => $this->input->post('no_agenda'),
 				'tanggal' => $this->input->post('tanggal'),
 				'perihal' => $this->input->post('perihal'),
+				'file_dokumen' => $namefile,
 				'status' => 'On Review',
-				'timestamp' => $this->input->post('timestamp'),
+				'timestamp' => date("Y-m-d"),
 			);
 
 			$this->admin_model->insertdokumen($data_dokumen);	
@@ -66,7 +68,7 @@ class Admin extends CI_Controller {
 	}
 
 
-	public function uploadfoto($npk)
+	public function uploaddokumen()
 	{
 		if (!$this->ion_auth->logged_in())
 		{
@@ -78,60 +80,50 @@ class Admin extends CI_Controller {
 			// redirect them to the home page because they must be an administrator to view this
 			show_error('You must be an administrator to view this page.');
 		}
-		else
-		{
-		if (empty($npk)) {
-			echo "Hayo mau ngapainnn";
-			exit;
-		}else{
+		else{
 			
-			$config['upload_path']          = './image/';
-            $config['allowed_types']        = 'jpg|jpeg';
+			$config['upload_path']          = './filedoc/';
+            $config['allowed_types']        = 'pdf';
             $config['encrypt_name']         = TRUE;
-            $config['max_size']             = 1000;
-            $config['max_width']            = 1024;
-            $config['max_height']           = 768;
+            $config['max_size']             = 10000;
 
             $this->load->library('upload', $config);
 
             if ( ! $this->upload->do_upload('userfile'))
             {
                     $error = array('error' => $this->upload->display_errors());
+                    var_dump($error);
+                    exit;
                     $this->session->set_flashdata('false', 'Data gagal tersimpan');
-                    redirect('admin/detail_karyawan/'.$npk);
+                    redirect('admin/list_surat/'.$npk);
             }
             else
             {
                     $data = $this->upload->data();
-                    $additional_data = array(
-                        'file_foto'  => $data['file_name']
-                    );
-                	$this->data_karyawan_model->insert_filename($additional_data,$npk);
-                	$this->session->set_flashdata('done', 'Data berhasil tersimpan');
-                    redirect('admin/detail_karyawan/'.$npk);
+                    return $data['file_name'];
             }
 		}
 		}
 		
-	}
+	
+
+			public function viewfile($doc_id)
+			{
+				if (!$this->ion_auth->logged_in())
+				{
+					// redirect them to the login page
+					redirect('auth/login', 'refresh');
+				}
+				else if ($this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
+				{
+				
+					$fname = $this->uri->segment(3);
+			        $tofile= realpath("filedoc/".$doc_id);
+			        header('Content-Type: application/pdf');
+			        readfile($tofile);
+
+				}
+			}
 
 
-	public function viewfile($doc_id)
-	{
-		if (!$this->ion_auth->logged_in())
-		{
-			// redirect them to the login page
-			redirect('auth/login', 'refresh');
 		}
-		else if ($this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
-		{
-		
-			$fname = $this->uri->segment(3);
-	        $tofile= realpath("filedoc/".$doc_id);
-	        header('Content-Type: application/pdf');
-	        readfile($tofile);
-
-		}
-	}
-
-}

@@ -129,39 +129,39 @@
                                                                         <div class="mt-4 mt-lg-0">
                                                                             <form>
                                                                                 <div class="row mb-4">
-                                                                                    <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Pengirim</label>
+                                                                                    <label for="nama_pengirim" class="col-sm-3 col-form-label">Pengirim</label>
                                                                                     <div class="col-sm-9">
-                                                                                        <input type="text" name="nama_pengirim" class="form-control" id="horizontal-firstname-input">
+                                                                                        <input type="text" name="nama_pengirim" class="form-control" id="nama_pengirim" required>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row mb-4">
-                                                                                    <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">No. Surat</label>
+                                                                                    <label for="no_surat" class="col-sm-3 col-form-label">No. Surat</label>
                                                                                     <div class="col-sm-9">
-                                                                                        <input type="text" name="no_surat" class="form-control" id="horizontal-firstname-input">
+                                                                                        <input type="text" name="no_surat" class="form-control" id="no_surat" required>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row mb-4">
-                                                                                    <label for="horizontal-firstname-input"  class="col-sm-3 col-form-label">No. Agenda</label>
+                                                                                    <label for="no_agenda"  class="col-sm-3 col-form-label">No. Agenda</label>
                                                                                     <div class="col-sm-9">
-                                                                                        <input type="text" name="no_agenda" class="form-control" id="horizontal-firstname-input">
+                                                                                        <input type="text" name="no_agenda" class="form-control" id="no_agenda" required>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row mb-4">
-                                                                                    <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Tanggal</label>
+                                                                                    <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
                                                                                     <div class="col-sm-9">
-                                                                                        <input class="form-control" name="tanggal" type="date" value="<?php echo date("Y-m-d"); ?>" id="example-date-input">
+                                                                                        <input class="form-control" name="tanggal" type="date" value="<?php echo date("Y-m-d"); ?>" id="tanggal" required>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row mb-4">
-                                                                                    <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Perihal</label>
+                                                                                    <label for="perihal" class="col-sm-3 col-form-label">Perihal</label>
                                                                                     <div class="col-sm-9">
-                                                                                        <textarea type="text" name="perihal" class="form-control" id="horizontal-firstname-input" rows="3"></textarea>
+                                                                                        <textarea type="text" name="perihal" class="form-control" id="perihal" rows="3" required></textarea>
                                                                                     </div>
                                                                                 </div>
                                                                                  <div class="row mb-4">
                                                                                     <label for="formfile" class="col-sm-3 col-form-label">Upload scan</label>
                                                                                     <div class="col-sm-9">
-                                                                                        <input type="file" name="file_dokumen" id="formFile" class="form-control">
+                                                                                        <input type="file" name="userfile" id="formFile" class="form-control" required>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row justify-content-end">
