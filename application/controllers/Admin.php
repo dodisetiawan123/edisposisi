@@ -29,6 +29,7 @@ class Admin extends CI_Controller {
 		else
 		{
 			$this->data['dokumen'] = $this->admin_model->get_dokumen();
+			$this->data['users'] = $this->admin_model->get_users();
 			$this->load->view('sekper', $this->data);
 		}
 	}

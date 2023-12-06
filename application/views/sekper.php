@@ -71,9 +71,10 @@
 
 
                                     <tbody>
+                                        <?php $no = 0;?>
                                         <?php foreach ($dokumen as $data) {?>
                                         <tr style="cursor: pointer;">
-                                            <td>1</td>
+                                            <td><?php echo $no = $no+1;  ?></td>
                                             <td>
                                                 Pengirim : <strong><?php echo $data->nama_pengirim; ?> </strong><br>
                                                 No Surat : <strong><?php echo $data->no_surat; ?></strong> <br>
@@ -119,7 +120,7 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form enctype="multipart/form-data" name="karyawan" accept-charset="utf-8" method="post" action="<?php echo site_url('admin/tambahdokumen') ?>" onsubmit="return validateForm()">
+                                                    <form enctype="multipart/form-data" name="dokumen" accept-charset="utf-8" method="post" action="<?php echo site_url('admin/tambahdokumen') ?>">
                                                      <div class="row">
                                                         <div class="col-lg-12">
                                                             <div class="card">
@@ -200,15 +201,16 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
+                                                    <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('admin/disposisi') ?>"> 
                                                     <div class="form-group">
                                                     <label for="exampleFormControlSelect1">Pilih User</label>
                                                     <select class="form-control" id="exampleFormControlSelect1">
-                                                      <option>Direktur Utama</option>
-                                                      <option>Direktur Operasi</option>
-                                                      <option>Direktur Keuangan</option>
-                                                      <option>Direktur Pemasaran</option>
+                                                        <?php foreach ($users as $data) {?>
+                                                      <option><?php echo $data->first_name.' '.$data->last_name.'->'.$data->email ?></option>
+                                                        <?php } ?>
                                                     </select>
-                                                  </div>
+                                                    </div>
+                                                    </form>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
