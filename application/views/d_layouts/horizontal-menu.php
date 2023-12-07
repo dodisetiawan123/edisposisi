@@ -53,7 +53,7 @@
 
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item bg-soft-light border-start border-end" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="rounded-circle header-profile-user" src="<?php echo base_url('assets/images/users/avatar-1.jpg') ?>" alt="Header Avatar">
+                    <img class="rounded-circle header-profile-user" src="<?php echo base_url('assets/images/users/'.$this->ion_auth->user()->row()->company) ?>" alt="Header Avatar">
                     <span class="d-none d-xl-inline-block ms-1 fw-medium"><?php echo $this->ion_auth->user()->row()->username  ?></span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>

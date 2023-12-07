@@ -2,7 +2,7 @@
 <?php include 'd_layouts/head-main.php'; ?>
 
 <head>
-    <title>Direksi | E-disposisi</title>
+    <title>Direksi | E-dispos</title>
     <?php include 'd_layouts/head.php'; ?>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css') ?>">
       <!-- DataTables -->

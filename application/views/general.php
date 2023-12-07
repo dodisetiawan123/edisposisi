@@ -2,7 +2,7 @@
 <?php include 'gm_layouts/head-main.php'; ?>
 
 <head>
-    <title>GM Biro | E-disposisi</title>
+    <title>GM Biro | E-dispos</title>
     <?php include 'gm_layouts/head.php'; ?>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css') ?>">
       <!-- DataTables -->

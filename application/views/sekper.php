@@ -2,7 +2,7 @@
 <?php include 'layouts/head-main.php'; ?>
 
 <head>
-    <title>Sekper | E-disposisi</title>
+    <title>Sekper | E-dispos</title>
     <?php include 'layouts/head.php'; ?>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css') ?>">
       <!-- DataTables -->
@@ -196,26 +196,28 @@
                                     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                                             <div class="modal-content">
+                                            <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('admin/disposisi/') ?>"> 
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="staticBackdropLabel">Lanjutkan Dokumen</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('admin/disposisi') ?>"> 
+                                                   
                                                     <div class="form-group">
                                                     <label for="exampleFormControlSelect1">Pilih User</label>
                                                     <select class="form-control" id="exampleFormControlSelect1">
                                                         <?php foreach ($users as $data) {?>
-                                                      <option value=""><?php echo $data->first_name.' '.$data->last_name.'->'.$data->email ?></option>
+                                                      <option value="<?php echo $data->id ?>"><?php echo $data->first_name.' '.$data->last_name.'('.$data->email.')' ?></option>
                                                         <?php } ?>
                                                     </select>
                                                     </div>
-                                                    </form>
+                                                   
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-primary">Lanjutkan</button>
+                                                    <button type="submit" class="btn btn-primary">Lanjutkan</button>
                                                 </div>
+                                            </form>
                                             </div>
                                         </div>
                                     </div>

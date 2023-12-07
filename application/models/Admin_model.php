@@ -22,7 +22,7 @@ class Admin_model extends CI_Model {
 
     public function get_users()
     {
-        $this->db->select('users.first_name,users.last_name,users.email');
+        $this->db->select('users.id,users.first_name,users.last_name,users.email');
         $this->db->from('users');
         $this->db->join('users_groups', 'users.id = users_groups.user_id', 'left' );
         $this->db->where('group_id', 2);
@@ -39,11 +39,17 @@ class Admin_model extends CI_Model {
             
     }
 
-
-    public function updatemkrenumerasi($data_mk_renumerasi,$npk)
+    public function insertdokumenuser($data)
     {
-         $this->db->where('npk', $npk);
-         $this->db->update('mk_renumerasi', $data_mk_renumerasi);
+         $this->db->insert('dokumen_user', $data);
+            
+    }
+
+
+    public function updatestatus($data,$id_dokumen)
+    {
+         $this->db->where('id_dokumen', $id_dokumen);
+         $this->db->update('dokumen', $data);
             
     }
 
