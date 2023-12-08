@@ -30,6 +30,7 @@ class Admin extends CI_Controller {
 		{
 			$this->data['dokumen'] = $this->admin_model->get_dokumen();
 			$this->data['users'] = $this->admin_model->get_users();
+			$this->data['model'] = $this->admin_model;
 
 			$this->load->view('sekper', $this->data);
 		}
@@ -58,7 +59,7 @@ class Admin extends CI_Controller {
 				'tanggal' => $this->input->post('tanggal'),
 				'perihal' => $this->input->post('perihal'),
 				'file_dokumen' => $namefile,
-				'status' => 'On Review'
+				'status' => 'OnProcess'
 			);
 
 			$this->admin_model->insertdokumen($data_dokumen);	
@@ -68,7 +69,7 @@ class Admin extends CI_Controller {
 		}
 	}
 
-	public function disposisi($id_dokumen)
+	public function disposisi()
 	{
 		if (!$this->ion_auth->logged_in())
 		{
@@ -82,16 +83,16 @@ class Admin extends CI_Controller {
 		}
 		else
 		{
-			exit;
-			
 			$data_dokumen = array(
-				'keterangan' => $this->input->post('keterangan'),
 				'id_users' => $this->input->post('id_users'),
 				'id_dokumen' => $this->input->post('id_dokumen')
 			);
+
 			$data_status = array(
-				'status' => 'OnProgres'
+				'status' => 'OnProgress BOD'
 			);
+
+			$id_dokumen = $this->input->post('id_dokumen');
 
 			$this->admin_model->insertdokumenuser($data_dokumen);
 			$this->admin_model->updatestatus($data_status,$id_dokumen);	

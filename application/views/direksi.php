@@ -61,26 +61,40 @@
 
 
                                     <tbody>
+                                        <?php $no = 0;?>
+                                        <?php foreach ($dokumen as $data) {?>
                                         <tr style="cursor: pointer;">
-                                            <td>2</td>
+                                            <td><?php echo $no = $no+1;  ?></td>
                                             <td>
-                                                Pengirim : <strong>PT Soltius Indonesia </strong><br>
-                                                No Surat : <strong>XX1/BRT/NO/1 </strong> <br>
-                                                Tanggal  : <strong>22 Desember 2023</strong><br>
-                                                Perihal  : <strong>Acceptanble Certificate</strong>
+                                               <strong> Pengirim :</strong> <?php echo $data->nama_pengirim; ?> <br>
+                                               <strong> No Surat :</strong> <?php echo $data->no_surat; ?> <br>
+                                               <strong> No Agenda :</strong> <?php echo $data->no_agenda; ?> <br>
+                                                <strong>Tanggal  :</strong><?php echo $data->tanggal; ?><br>
+                                                <strong>Perihal  :</strong><?php echo $data->perihal; ?>
                                             </td>
-                                            <th>Accepted</th>
+                                            <td><strong><?php echo $data->status; ?></strong> <br>
+                                                <?php foreach ($model->get_statusdokumen($data->id_dokumen) as $datastatus) {
+                                                    echo $datastatus->first_name.' '.$datastatus->last_name;
+                                                    echo '->';
+                                                } ?>
                                             <td>
-                                                <a href="<?=site_url('direksi/viewfile/'.'Lampiran.pdf')?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
+                                                <a href="<?=site_url('direksi/viewfile/'.$data->file_dokumen)?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
+                                            </td>
                                             <td>
                                                 <div>
+                                                <?php if ($data->status == 'OnProgress BOD'): ?>
                                                     <div class="btn-group btn-group-example mb-3" role="group">
-                                                        <button type="button" class="btn btn-success w-xs" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Accept</button>
+                                                        <button type="button" value="<?php echo $data->id_dokumen ?>" class="btn btn-success w-xs update" data-bs-toggle="modal">Accept</button>
                                                         <button type="button" class="btn btn-danger w-xs" data-bs-toggle="modal" data-bs-target="#reject">Reject</button>
                                                     </div>
+                                                    
+                                                <?php endif ?>
+                                                    
                                                 </div>
                                             </td>
                                         </tr>
+                                        <?php } ?>
+                                       
                                     </tbody>
                                 </table>
 
@@ -102,35 +116,36 @@
                                     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                                             <div class="modal-content">
+
+                                            <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('direksi/disposisi/') ?>"> 
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="staticBackdropLabel">Lanjutkan Dokumen</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                                <div class="modal-body">
-                                                    <form>
+                                                <div class="modal-body">    
+                                                     <input type="hidden" id="id_dokumen" name="id_dokumen">
                                                     <div class="form-group mb-3">
                                                         <label for="exampleFormControlTextarea1">Keterangan</label>
-                                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                        <textarea class="form-control" name="keterangan" id="exampleFormControlTextarea1" rows="3"></textarea>
                                                     </div>
                                                     <div class="form-group">
                                                     <label for="exampleFormControlSelect1">Diteruskan ke- </label>
-                                                    <select class="form-control" id="exampleFormControlSelect1">
-                                                      <option>GM Biro Keuangan dan Akuntansi</option>
-                                                      <option>GM Biro Human Capital</option>
-                                                      <option>GM Biro Man. Suply Chain</option>
-                                                      <option>GM Biro Pengembangan Usaha</option>
-                                                      <option>GM Biro Hukum</option>
+                                                    <select class="form-control" name="id_users" id="exampleFormControlSelect1">
+                                                       <?php foreach ($users as $data) {?>
+                                                      <option value="<?php echo $data->id ?>"><?php echo $data->first_name.' '.$data->last_name.' ('.$data->email.')' ?></option>
+                                                        <?php } ?>
                                                     </select>
                                                   </div>
-                                                  </form>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-primary">Lanjutkan</button>
+                                                    <button type="submit" class="btn btn-primary">Lanjutkan</button>
                                                 </div>
+                                            </form>
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="modal fade" id="reject" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                                             <div class="modal-content">
@@ -186,6 +201,15 @@
 
 <!-- App js -->
 <script src="<?php echo base_url('assets/js/app.js') ?>"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+          $(".update").click(function(){ 
+              var butval = $(this).val();     
+              $("#id_dokumen").val(butval);
+              $("#staticBackdrop").modal('show');
+          });
+        });
+</script>
 
 </body>
 

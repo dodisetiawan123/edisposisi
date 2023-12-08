@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Admin_model extends CI_Model {
+class Direksi_model extends CI_Model {
 
     public function __construct()
     {
@@ -10,15 +10,29 @@ class Admin_model extends CI_Model {
         date_default_timezone_set('Asia/Jakarta');
     }
 
-    public function get_dokumen()
+    public function get_dokumen($id_users)
     {
         $this->db->select('dokumen.id_dokumen,dokumen.nama_pengirim,dokumen.no_surat,dokumen.no_agenda,dokumen.tanggal,dokumen.perihal,dokumen.file_dokumen,status');
         $this->db->from('dokumen');
+        $this->db->join('dokumen_user', 'dokumen_user.id_dokumen = dokumen.id_dokumen', 'left' );
+        $this->db->where('dokumen_user.id_users', $id_users);
         $this->db->order_by('id_dokumen', 'DESC');
 
         $query=$this->db->get();
         return $query->result();
     }
+
+    public function get_users()
+    {
+        $this->db->select('users.id,users.first_name,users.last_name,users.email');
+        $this->db->from('users');
+        $this->db->join('users_groups', 'users.id = users_groups.user_id', 'left' );
+        $this->db->where('group_id', 3);
+
+        $query=$this->db->get();
+        return $query->result();
+    }
+
      public function get_statusdokumen($id_dokumen)
     {
         $this->db->select('users.first_name,users.last_name');
@@ -29,24 +43,6 @@ class Admin_model extends CI_Model {
         return $query->result();
     }
 
-    public function get_users()
-    {
-        $this->db->select('users.id,users.first_name,users.last_name,users.email');
-        $this->db->from('users');
-        $this->db->join('users_groups', 'users.id = users_groups.user_id', 'left' );
-        $this->db->where('group_id', 2);
-
-        $query=$this->db->get();
-        return $query->result();
-    }
-
-
-  
-    public function insertdokumen($data)
-    {
-         $this->db->insert('dokumen', $data);
-            
-    }
 
     public function insertdokumenuser($data)
     {
@@ -60,15 +56,6 @@ class Admin_model extends CI_Model {
          $this->db->where('id_dokumen', $id_dokumen);
          $this->db->update('dokumen', $data);
             
-    }
-
-
-    public function listdata()
-    {
-        $this->db->select('npk,nama,no_absen');
-        $this->db->from('md_karyawan');
-        $query=$this->db->get();
-        return $query->result_array();
     }
 
     

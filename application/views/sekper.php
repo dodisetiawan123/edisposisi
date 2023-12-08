@@ -76,18 +76,27 @@
                                         <tr style="cursor: pointer;">
                                             <td><?php echo $no = $no+1;  ?></td>
                                             <td>
-                                                Pengirim : <strong><?php echo $data->nama_pengirim; ?> </strong><br>
-                                                No Surat : <strong><?php echo $data->no_surat; ?></strong> <br>
-                                                Tanggal  : <strong><?php echo $data->tanggal; ?></strong><br>
-                                                Perihal  : <strong><?php echo $data->perihal; ?></strong>
+                                                <strong>Pengirim : </strong><?php echo $data->nama_pengirim; ?> <br>
+                                                <strong>No Surat :</strong> <?php echo $data->no_surat; ?><br>
+                                                <strong> No Agenda :</strong> <?php echo $data->no_agenda; ?> <br>
+                                                <strong>Tanggal  : </strong><?php echo $data->tanggal; ?><br>
+                                                <strong>Perihal  : </strong><?php echo $data->perihal; ?>
                                             </td>
-                                            <td><?php echo $data->status; ?></td>
+                                            <td><strong><?php echo $data->status; ?></strong> <br>
+                                                <?php foreach ($model->get_statusdokumen($data->id_dokumen) as $datastatus) {
+                                                    echo $datastatus->first_name.' '.$datastatus->last_name;
+                                                    echo '->';
+                                                } ?>
+                                            </td>
                                             <td>
                                                 <a href="<?=site_url('admin/viewfile/'.$data->file_dokumen)?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
                                             </td>
                                             <td>
+                                                <?php if ($data->status == 'OnProcess'): ?>
                                                 <button type="button" class="btn btn-secondary btn-md">Edit</button>
-                                                <button type="button" class="btn btn-success btn-md" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Lanjutkan Dokumen</button>
+                                                <button type="button" class="btn btn-success btn-md update" value="<?php echo $data->id_dokumen; ?>">Lanjutkan Dokumen</button>
+                                                    
+                                                <?php endif ?>
                                             </td>
                                         </tr>
                                         <?php } ?>
@@ -202,10 +211,11 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
+                                                    <input type="hidden" id="id_dokumen" name="id_dokumen">
                                                    
                                                     <div class="form-group">
                                                     <label for="exampleFormControlSelect1">Pilih User</label>
-                                                    <select class="form-control" id="exampleFormControlSelect1">
+                                                    <select class="form-control" id="exampleFormControlSelect1" name="id_users">
                                                         <?php foreach ($users as $data) {?>
                                                       <option value="<?php echo $data->id ?>"><?php echo $data->first_name.' '.$data->last_name.'('.$data->email.')' ?></option>
                                                         <?php } ?>
@@ -256,6 +266,16 @@
 <script src="<?php echo base_url('assets/libs/dropzone/min/dropzone.min.js') ?>"></script>
 <!-- App js -->
 <script src="<?php echo base_url('assets/js/app.js') ?>"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+          $(".update").click(function(){ 
+              var butval = $(this).val();     
+              $("#id_dokumen").val(butval);
+              $("#staticBackdrop").modal('show');
+          });
+        });
+</script>
 
 </body>
 
