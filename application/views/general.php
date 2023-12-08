@@ -54,7 +54,7 @@
                                             <th>No</th>
                                             <th>Detail</th>
                                             <th>Lampiran</th>
-                                            <th>Requestor</th>
+                                            <th>Status</th>
                                             <th>Catatan</th>
                                             <th>Pilihan</th>
                                         </tr>
@@ -62,46 +62,34 @@
 
 
                                     <tbody>
+                                        <?php $no = 0;?>
+                                        <?php foreach ($dokumen as $data) {?>
                                         <tr style="cursor: pointer;">
-                                            <td>1</td>
+                                            <td><?php echo $no = $no+1;  ?></td>
                                             <td>
-                                                Pengirim : <strong>PT Soltius Indonesia </strong><br>
-                                                No Surat : <strong>XX1/BRT/NO/1 </strong> <br>
-                                                Tanggal  : <strong>22 Desember 2023</strong><br>
-                                                Perihal  : <strong>Acceptanble Certificate</strong>
+                                                <strong> Pengirim :</strong> <?php echo $data->nama_pengirim; ?> <br>
+                                                <strong> No Surat :</strong> <?php echo $data->no_surat; ?> <br>
+                                                <strong> No Agenda :</strong> <?php echo $data->no_agenda; ?> <br>
+                                                <strong>Tanggal  :</strong> <?php echo $data->tanggal; ?><br>
+                                                <strong>Perihal  :</strong> <?php echo $data->perihal; ?>
                                             </td>
                                             <th> <a href="<?=site_url('direksi/viewfile/'.'Lampiran.pdf')?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
                                             </th>
                                             <td>
-                                               Direktur Utama
+                                                <strong>Status : </strong> <?php echo $data->status ?><br>
+                                                <strong>Requestor : </strong>
+                                               <?php foreach ($model->get_statusdokumen($data->id_dokumen) as $datastatus) {
+                                                    echo $datastatus->first_name.' '.$datastatus->last_name;
+                                                } ?>
                                             </td>
                                             <td>
-                                                Segera Di tindaklanjuti
+                                                <?php echo $data->keterangan ?>
                                             </td>
                                              <td>
-                                               <button type="button" class="btn btn-success btn-md">Accept</button>
+                                               <button type="button" class="btn btn-success btn-md accept" value="<?php echo $data->id_dokumen ?>" >Accept</button>
                                             </td>
                                         </tr>
-                                        <tr style="cursor: pointer;">
-                                            <td>1</td>
-                                            <td>
-                                                Pengirim : <strong>PT Prima Indonesia </strong><br>
-                                                No Surat : <strong>XX1/BRT/NO/1 </strong> <br>
-                                                Tanggal  : <strong>11 Desember 2023</strong><br>
-                                                Perihal  : <strong>Pengumuman Tender</strong>
-                                            </td>
-                                            <th> <a href="<?=site_url('direksi/viewfile/'.'Lampiran.pdf')?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
-                                            </th>
-                                            <td>
-                                              Direktur Operasi
-                                           </td>
-                                            <td>
-                                              Eksekusi
-                                            </td>
-                                             <td>
-                                               <button type="button" class="btn btn-success btn-md">Accept</button>
-                                            </td>
-                                        </tr>
+                                        <?php } ?>
                                        
                                     </tbody>
                                 </table>
@@ -121,79 +109,29 @@
     </div>
     <!-- end main content-->
     <!--  Extra Large modal example -->
-                                    <div class="modal fade bs-example-modal-lg" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg">
+                                    <div class="modal fade" id="accept" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                                             <div class="modal-content">
-                                                <div class="modal-header text-center">
-                                                    <h5 class="modal-title" id="myExtraLargeModalLabel">Tambah Dokumen</h5>
+                                                <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('general/acceptdokumen/') ?>">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="staticBackdropLabel">Accept Dokumen</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form enctype="multipart/form-data" name="karyawan" accept-charset="utf-8" method="post" action="<?php echo site_url('admin/insertdata') ?>" onsubmit="return validateForm()">
-                                                     <div class="row">
-                                                        <div class="col-lg-12">
-                                                            <div class="card">
-                                                                <div class="card-body">
-                                                                    <div class="row">
-                                                                         <div class="col-lg-12 ms-lg-auto">
-                                                                        <div class="mt-4 mt-lg-0">
-                                                                            <form>
-                                                                                <div class="row mb-4">
-                                                                                    <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Pengirim</label>
-                                                                                    <div class="col-sm-9">
-                                                                                        <input type="text" class="form-control" id="horizontal-firstname-input">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="row mb-4">
-                                                                                    <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">No. Surat</label>
-                                                                                    <div class="col-sm-9">
-                                                                                        <input type="text" class="form-control" id="horizontal-firstname-input">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="row mb-4">
-                                                                                    <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">No. Agenda</label>
-                                                                                    <div class="col-sm-9">
-                                                                                        <input type="text" class="form-control" id="horizontal-firstname-input">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="row mb-4">
-                                                                                    <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Tanggal</label>
-                                                                                    <div class="col-sm-9">
-                                                                                        <input type="text" class="form-control" id="horizontal-firstname-input">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="row mb-4">
-                                                                                    <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Perihal</label>
-                                                                                    <div class="col-sm-9">
-                                                                                        <textarea type="text" class="form-control" id="horizontal-firstname-input" rows="3"></textarea>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="row justify-content-end">
-                                                                                    <div class="col-sm-9">
-                                                                                        <div>
-                                                                                            <button type="submit" class="btn btn-primary w-md">Submit</button>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </form>
-                                                                        </div>
-                                                                    </div>
-                                                                        
-                                                                    </div>
-                                                                    
-                                                                </div>
-                                                                <!-- end card body -->
-                                                            </div>
-                                                            <!-- end card -->
-                                                        </div>
-                                                        <!-- end col -->
+                                                    <input type="hidden" id="id_dokumen" name="id_dokumen">
+                                                    <div class="form-group mb-3">
+                                                        <label for="exampleFormControlTextarea1">Keterangan</label>
+                                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" required></textarea>
                                                     </div>
-                                                    </form>
-                                                    <!-- end row -->
                                                 </div>
-                                            </div><!-- /.modal-content -->
-                                        </div><!-- /.modal-dialog -->
-                                    </div><!-- /.modal -->
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-success">Accept</button>
+                                                </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
 
 </div>
 <!-- END layout-wrapper -->
@@ -227,7 +165,15 @@
 
 <!-- App js -->
 <script src="<?php echo base_url('assets/js/app.js') ?>"></script>
-
+<script type="text/javascript">
+    $(document).ready(function(){
+          $(".accept").click(function(){ 
+              var butval = $(this).val();     
+              $("#id_dokumen").val(butval);
+              $("#accept").modal('show');
+          });
+        });
+</script>
 </body>
 
 </html>

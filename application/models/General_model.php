@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Direksi_model extends CI_Model {
+class General_model extends CI_Model {
 
     public function __construct()
     {
@@ -12,7 +12,7 @@ class Direksi_model extends CI_Model {
 
     public function get_dokumen($id_users)
     {
-        $this->db->select('dokumen.id_dokumen,dokumen.nama_pengirim,dokumen.no_surat,dokumen.no_agenda,dokumen.tanggal,dokumen.perihal,dokumen.file_dokumen,status');
+        $this->db->select('dokumen.id_dokumen,dokumen.nama_pengirim,dokumen.no_surat,dokumen.no_agenda,dokumen.tanggal,dokumen.perihal,dokumen.file_dokumen,status,dokumen_user.keterangan');
         $this->db->from('dokumen');
         $this->db->join('dokumen_user', 'dokumen_user.id_dokumen = dokumen.id_dokumen', 'left' );
         $this->db->where('dokumen_user.id_users', $id_users);
@@ -40,7 +40,7 @@ class Direksi_model extends CI_Model {
         $this->db->join('dokumen_user', 'dokumen_user.id_users = users.id', 'left' );
         $this->db->join('users_groups', 'users_groups.user_id = users.id', 'left' );
         $this->db->where('id_dokumen', $id_dokumen);
-        $this->db->where('group_id', 3);
+        $this->db->where('group_id', 2);
         $query=$this->db->get();
         return $query->result();
     }

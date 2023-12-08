@@ -53,8 +53,8 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Detail</th>
-                                            <th>Status</th>
                                             <th>Lampiran</th>
+                                            <th>Status</th>
                                             <th>Pilihan</th>
                                         </tr>
                                     </thead>
@@ -72,14 +72,16 @@
                                                 <strong>Tanggal  :</strong><?php echo $data->tanggal; ?><br>
                                                 <strong>Perihal  :</strong><?php echo $data->perihal; ?>
                                             </td>
-                                            <td><strong><?php echo $data->status; ?></strong> <br>
+                                            <td>
+                                                <a href="<?=site_url('general/viewfile/'.$data->file_dokumen)?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
+                                            </td>
+                                            <td><strong>Status :</strong> <?php echo $data->status; ?><br>
+                                                <strong>Ditujukan ke :</strong> 
                                                 <?php foreach ($model->get_statusdokumen($data->id_dokumen) as $datastatus) {
                                                     echo $datastatus->first_name.' '.$datastatus->last_name;
-                                                    echo '->';
                                                 } ?>
-                                            <td>
-                                                <a href="<?=site_url('direksi/viewfile/'.$data->file_dokumen)?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
                                             </td>
+                                            
                                             <td>
                                                 <div>
                                                 <?php if ($data->status == 'OnProgress BOD'): ?>
