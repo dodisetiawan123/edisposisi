@@ -86,8 +86,8 @@ class Admin extends CI_Controller {
 			$phone='083830158599';
 			$response = $this->sendwa($phone);
 			if ($response=='{}') {
-				echo "Gagal Send WA";
-				exit;
+				$this->session->set_flashdata('error', "Data gagal terkirim");
+	            redirect('admin/list_surat');
 			} else {
 			
 				$data_dokumen = array(
@@ -110,7 +110,7 @@ class Admin extends CI_Controller {
 			
 
 
-            $this->session->set_flashdata('done', $response);
+            $this->session->set_flashdata('done', 'Data berhasil terkirim');
             redirect('admin/list_surat');
 
 			}
