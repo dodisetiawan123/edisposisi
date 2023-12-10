@@ -86,7 +86,9 @@
                                                 <?php echo $data->keterangan ?>
                                             </td>
                                              <td>
-                                               <button type="button" class="btn btn-success btn-md accept" value="<?php echo $data->id_dokumen ?>" >Accept</button>
+                                                <?php if ($data->status == 'OnProgress GM'): ?>
+                                               <button type="button" class="btn btn-success btn-md accept" value="<?php echo $data->id_dokumen ?>" >Accept</button>  
+                                                <?php endif ?>
                                             </td>
                                         </tr>
                                         <?php } ?>
@@ -114,15 +116,14 @@
                                             <div class="modal-content">
                                                 <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('general/acceptdokumen/') ?>">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="staticBackdropLabel">Accept Dokumen</h5>
+                                                    <h5 class="modal-title" id="staticBackdropLabel">Accept dokumen?</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <input type="hidden" id="id_dokumen" name="id_dokumen">
-                                                    <div class="form-group mb-3">
-                                                        <label for="exampleFormControlTextarea1">Keterangan</label>
-                                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" required></textarea>
-                                                    </div>
+                                                    <p>
+                                                        <h5>
+                                                    <input type="hidden" name="id_dokumen" id="id_dokumen"></h5>
+                                                    </p>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>

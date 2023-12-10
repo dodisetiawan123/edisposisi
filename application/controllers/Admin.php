@@ -83,9 +83,17 @@ class Admin extends CI_Controller {
 		}
 		else
 		{
-			$data_dokumen = array(
+			$phone='083830158599';
+			$response = $this->sendwa($phone);
+			if ($response=='{}') {
+				echo "Gagal Send WA";
+				exit;
+			} else {
+			
+				$data_dokumen = array(
 				'id_users' => $this->input->post('id_users'),
-				'id_dokumen' => $this->input->post('id_dokumen')
+				'id_dokumen' => $this->input->post('id_dokumen'),
+				'responswa' => $response
 			);
 
 			$data_status = array(
@@ -94,11 +102,20 @@ class Admin extends CI_Controller {
 
 			$id_dokumen = $this->input->post('id_dokumen');
 
+
+
 			$this->admin_model->insertdokumenuser($data_dokumen);
 			$this->admin_model->updatestatus($data_status,$id_dokumen);	
 
-            $this->session->set_flashdata('done', 'Data berhasil tersimpan');
+			
+
+
+            $this->session->set_flashdata('done', $response);
             redirect('admin/list_surat');
+
+			}
+
+			
 		}
 	}
 
@@ -161,5 +178,53 @@ class Admin extends CI_Controller {
 				}
 			}
 
+			public function sendwa($phone)
+			{
+				if (!$this->ion_auth->logged_in())
+				{
+					// redirect them to the login page
+					redirect('auth/login', 'refresh');
+				}
+				else if ($this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
+				{
+					$message = "*Kepada Yth.*
+Direktur utama 
+
+Dokumen disposisi baru saja ditambahkan dengan informasi berikut ini :
+
+*Pengirim* : PT Waskita Karya 
+*No Agenda* : 123456 
+*Tanggal* : 17 Januari 2023 
+*Perihal* : Acceptanble Certificate
+
+Silahkan klik link di bawah ini untuk detail informasi dan tindakan lebih lanjut :
+
+https://intranet.barata.id/IntranetBarata/
+
+Terimakasih";
+				
+					$curl = curl_init();
+
+					curl_setopt_array($curl, array(
+					  CURLOPT_URL => 'http://wa.simulasi.barata.com/send-message',
+					  CURLOPT_RETURNTRANSFER => true,
+					  CURLOPT_ENCODING => '',
+					  CURLOPT_MAXREDIRS => 10,
+					  CURLOPT_TIMEOUT => 0,
+					  CURLOPT_FOLLOWLOCATION => true,
+					  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+					  CURLOPT_CUSTOMREQUEST => 'POST',
+					  CURLOPT_POSTFIELDS => array('message' => $message,'number' => $phone,'file_dikirim'=> ''),
+					));
+
+					$response = curl_exec($curl);
+					curl_close($curl);
+					return $response;
+
+				}
+			}
+
+
 
 		}
+
