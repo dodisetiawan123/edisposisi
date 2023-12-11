@@ -19,7 +19,7 @@ class Dokumen_model extends CI_Model {
         $this->db->order_by('id_dokumen', 'DESC');
 
         $query=$this->db->get();
-        return $query->result();
+        return $query->row();
     }
 
 

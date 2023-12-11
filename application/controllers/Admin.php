@@ -191,6 +191,7 @@ class Admin extends CI_Controller {
 				{
 					$data_users = $this->admin_model->get_datausers($id_users);
 					$data_dokumen = $this->admin_model->get_datadokumen($id_dokumen);
+					$url = site_url('dokumen/view/');
 					$message = "*Kepada Yth.*
 ".$data_users['first_name'].' '.$data_users['last_name']." 
 

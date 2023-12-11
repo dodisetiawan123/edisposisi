@@ -52,8 +52,7 @@
           
 
             <div class="dropdown d-inline-block">
-                <button type="button" class="btn header-item bg-soft-light border-start border-end" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="d-none d-xl-inline-block ms-1 fw-medium">LOGIN</span>
+                <button type="button" class="btn header-item bg-soft-light border-start border-end" >Login
                 </button>
             </div>
 

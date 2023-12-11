@@ -26,7 +26,7 @@
     <!-- ============================================================== -->
     <!-- Start right Content here -->
     <!-- ============================================================== -->
-    <div class="main-content">
+      <div class="main-content">
 
         <div class="page-content">
             <div class="container-fluid">
@@ -34,8 +34,9 @@
                 <!-- start page title -->
                 <div class="row">
                     <div class="col-12">
-                        <div class="page-title-box d-sm-flex align-items-center justify-content-center">
-                            <h4 class="mb-sm-0 font-size-18">DETAIL DOKUMEN</h4>
+                        <div class="page-title-box d-sm-flex  align-items-center justify-content-center">
+                            <h4 class="mb-sm-0 font-size-18">Detail Dokumen Disposisi</h4>
+
 
                         </div>
                     </div>
@@ -43,46 +44,119 @@
                 <!-- end page title -->
 
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-lg-12">
                         <div class="card">
-                            <?php var_dump($dokumen); ?>
-                            
-                        </div>
-                    </div> <!-- end col -->
-                </div> <!-- end row -->
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                    <div class="table-responsive">
+                                        <table class="table table-nowrap align-middle mb-0">
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">1.</th>
+                                                    <td>
+                                                        <strong>Pengirim</strong> 
+                                                    </td>
+                                                    <td>: <?php echo $dokumen->nama_pengirim ?></td>
+                                                </tr>
+                                                 <tr>
+                                                    <th scope="row">2.</th>
+                                                    <td>
+                                                        <strong>No. Surat</strong> 
+                                                    </td>
+                                                    <td>: <?php echo $dokumen->no_surat ?></td>
+                                                </tr>
+                                                 <tr>
+                                                    <th scope="row">3.</th>
+                                                    <td>
+                                                        <strong>No. Agenda</strong> 
+                                                    </td>
+                                                    <td>: <?php echo $dokumen->no_agenda ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">4.</th>
+                                                    <td>
+                                                        <strong>Tanggal </strong> 
+                                                    </td>
+                                                    <td>: <?php echo $dokumen->tanggal ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">5.</th>
+                                                    <td>
+                                                        <strong>Perihal </strong> 
+                                                    </td>
+                                                    <td>: <?php echo $dokumen->perihal ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">6.</th>
+                                                    <td>
+                                                        <strong>Status Dokumen </strong> 
+                                                    </td>
+                                                    <td>: <?php echo $dokumen->status ?></td>
+                                                </tr>
+                                               
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                         <div class="table-responsive">
+                                        <table class="table table-nowrap align-middle mb-0">
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">7.</th>
+                                                    <td>
+                                                        <strong>Requestor</strong> 
+                                                    </td>
+                                                    <td>: <?php echo $dokumen->nama_pengirim ?></td>
+                                                </tr>
+                                                 <tr>
+                                                    <th scope="row">8.</th>
+                                                    <td>
+                                                        <strong>Ditujukan ke</strong> 
+                                                    </td>
+                                                    <td>: <?php echo $dokumen->no_surat ?></td>
+                                                </tr>
+                                                 <tr>
+                                                    <th scope="row">9.</th>
+                                                    <td>
+                                                        <strong>No. Agenda</strong> 
+                                                    </td>
+                                                    <td>: <?php echo $dokumen->no_agenda ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">10.</th>
+                                                    <td>
+                                                        <strong>Tanggal </strong> 
+                                                    </td>
+                                                    <td>: <?php echo $dokumen->tanggal ?></td>
+                                                </tr>
+                                               
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    </div>
 
-            </div>
-            <!-- container-fluid -->
+                                </div>
+                                <div class="row">
+                                    
+                                </div>
+                                
+
+                                <div class="d-print-none mt-3">
+                                    <div class="float-end">
+                                        <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light mr-1"><i class="fa fa-print"></i></a>
+                                        <a href="#" class="btn btn-primary w-md waves-effect waves-light">Send</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div> <!-- container-fluid -->
         </div>
         <!-- End Page-content -->
-
-
-        <?php include 'layouts/footer.php'; ?>
-    </div>
-    <!-- end main content-->
-    <!--  Extra Large modal example -->
-                                    <div class="modal fade" id="accept" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-                                            <div class="modal-content">
-                                                <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('general/acceptdokumen/') ?>">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="staticBackdropLabel">Accept dokumen?</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>
-                                                        <h5>
-                                                    <input type="hidden" name="id_dokumen" id="id_dokumen"></h5>
-                                                    </p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-success">Accept</button>
-                                                </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
 
 </div>
 <!-- END layout-wrapper -->
