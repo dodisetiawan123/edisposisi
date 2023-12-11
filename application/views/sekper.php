@@ -11,8 +11,8 @@
 
     <!-- Responsive datatable examples -->
     <link href="<?php echo base_url('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') ?>" rel="stylesheet" type="text/css" />
-    
-    
+    <!-- Sweet Alert-->
+    <link href="<?php echo base_url('assets/libs/sweetalert2/sweetalert2.min.css') ?>" rel="stylesheet" type="text/css" />
     <!-- dropzone css -->
     <link href="<?php echo base_url('assets/libs/dropzone/min/dropzone.min.css') ?>" rel="stylesheet" type="text/css" />
     <?php include 'layouts/head-style.php'; ?>
@@ -70,7 +70,7 @@
                                     </thead>
 
 
-                                    <tbody>
+                                    <tbody class="">
                                         <?php $no = 0;?>
                                         <?php foreach ($dokumen as $data) {?>
                                         <tr style="cursor: pointer;">
@@ -82,10 +82,14 @@
                                                 <strong>Tanggal  : </strong><?php echo $data->tanggal; ?><br>
                                                 <strong>Perihal  : </strong><?php echo $data->perihal; ?>
                                             </td>
-                                            <td><strong><?php echo $data->status; ?></strong> <br>
+                                            <td><strong>Status :</strong> <?php echo $data->status; ?><br>
+                                                <strong>Requestor :</strong> 
                                                 <?php foreach ($model->get_statusdokumen($data->id_dokumen) as $datastatus) {
                                                     echo $datastatus->first_name.' '.$datastatus->last_name;
-                                                    echo '->';
+                                                } ?><br>
+                                                <strong>Ditujukan ke :</strong> 
+                                                <?php foreach ($model->get_statusdokumengm($data->id_dokumen) as $datastatus) {
+                                                    echo $datastatus->first_name.' '.$datastatus->last_name;
                                                 } ?>
                                             </td>
                                             <td>
@@ -264,17 +268,55 @@
 
 <!-- dropzone js -->
 <script src="<?php echo base_url('assets/libs/dropzone/min/dropzone.min.js') ?>"></script>
+
+<!-- Sweet Alerts js -->
+<script src="<?php echo base_url('assets/libs/sweetalert2/sweetalert2.min.js') ?>"></script>
+
+<!-- Sweet alert init js-->
+<script src="<?php echo base_url('assets/js/pages/sweetalert.init.js') ?>"></script>
+
 <!-- App js -->
 <script src="<?php echo base_url('assets/js/app.js') ?>"></script>
 
 <script type="text/javascript">
     $(document).ready(function(){
+
           $(".update").click(function(){ 
               var butval = $(this).val();     
               $("#id_dokumen").val(butval);
               $("#staticBackdrop").modal('show');
           });
         });
+
+    <?php if($this->session->flashdata('done')){ ?>
+    $(document).ready(function(){
+         Swal.fire(
+            {
+                title: 'Dokumen berhasil terkirim',
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#5156be',
+                cancelButtonColor: "#fd625e"
+            }
+        )
+
+        });
+    <?php } ?>
+    <?php if($this->session->flashdata('error')){ ?>
+    $(document).ready(function(){
+         Swal.fire(
+            {
+                title: 'Dokumen Gagal terkirim',
+                text : 'Silahkan ulangi lagi',
+                icon: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#5156be',
+                cancelButtonColor: "#fd625e"
+            }
+        )
+
+        });
+    <?php } ?>
 </script>
 
 </body>

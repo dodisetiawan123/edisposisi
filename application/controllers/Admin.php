@@ -59,12 +59,13 @@ class Admin extends CI_Controller {
 				'tanggal' => $this->input->post('tanggal'),
 				'perihal' => $this->input->post('perihal'),
 				'file_dokumen' => $namefile,
+				'token' => $this->token(),
 				'status' => 'OnProcess'
 			);
 
 			$this->admin_model->insertdokumen($data_dokumen);	
 
-            $this->session->set_flashdata('done', 'Data berhasil tersimpan');
+            $this->session->set_flashdata('add', 'Data berhasil tersimpan');
             redirect('admin/list_surat');
 		}
 	}
@@ -83,14 +84,15 @@ class Admin extends CI_Controller {
 		}
 		else
 		{
-			$phone='083830158599';
-			$response = $this->sendwa($phone);
-			if ($response=='{}') {
-				$this->session->set_flashdata('error', "Data gagal terkirim");
-	            redirect('admin/list_surat');
-			} else {
+			$id_users = $this->input->post('id_users');
+			$id_dokumen = $this->input->post('id_dokumen');
+
+			$response = $this->sendwa($id_users,$id_dokumen);
+			$responsedata = json_decode($response, true);
+
+			if ($responsedata['status'] == true) {
 			
-				$data_dokumen = array(
+			$data_dokumen = array(
 				'id_users' => $this->input->post('id_users'),
 				'id_dokumen' => $this->input->post('id_dokumen'),
 				'responswa' => $response
@@ -101,20 +103,20 @@ class Admin extends CI_Controller {
 			);
 
 			$id_dokumen = $this->input->post('id_dokumen');
-
-
-
 			$this->admin_model->insertdokumenuser($data_dokumen);
 			$this->admin_model->updatestatus($data_status,$id_dokumen);	
-
-			
-
 
             $this->session->set_flashdata('done', 'Data berhasil terkirim');
             redirect('admin/list_surat');
 
+			} else if($response == "{}") {
+			 $this->disposisi();
+			}else{
+			
+			$this->session->set_flashdata('error', 'Data gagal terkirim');
+            redirect('admin/list_surat');
+			
 			}
-
 			
 		}
 	}
@@ -178,7 +180,7 @@ class Admin extends CI_Controller {
 				}
 			}
 
-			public function sendwa($phone)
+			public function sendwa($id_users,$id_dokumen)
 			{
 				if (!$this->ion_auth->logged_in())
 				{
@@ -187,19 +189,21 @@ class Admin extends CI_Controller {
 				}
 				else if ($this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
 				{
+					$data_users = $this->admin_model->get_datausers($id_users);
+					$data_dokumen = $this->admin_model->get_datadokumen($id_dokumen);
 					$message = "*Kepada Yth.*
-Direktur utama 
+".$data_users['first_name'].' '.$data_users['last_name']." 
 
 Dokumen disposisi baru saja ditambahkan dengan informasi berikut ini :
 
-*Pengirim* : PT Waskita Karya 
-*No Agenda* : 123456 
-*Tanggal* : 17 Januari 2023 
-*Perihal* : Acceptanble Certificate
+*Pengirim* : ".$data_dokumen['nama_pengirim']." 
+*No Agenda* : ".$data_dokumen['no_agenda']." 
+*Tanggal* : ".$data_dokumen['tanggal']." 
+*Perihal* : ".$data_dokumen['perihal']."
 
 Silahkan klik link di bawah ini untuk detail informasi dan tindakan lebih lanjut :
 
-https://intranet.barata.id/IntranetBarata/
+".$url.$data_dokumen['token']."
 
 Terimakasih";
 				
@@ -214,7 +218,7 @@ Terimakasih";
 					  CURLOPT_FOLLOWLOCATION => true,
 					  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 					  CURLOPT_CUSTOMREQUEST => 'POST',
-					  CURLOPT_POSTFIELDS => array('message' => $message,'number' => $phone,'file_dikirim'=> ''),
+					  CURLOPT_POSTFIELDS => array('message' => $message,'number' => $data_users['phone'],'file_dikirim'=> ''),
 					));
 
 					$response = curl_exec($curl);
@@ -223,6 +227,17 @@ Terimakasih";
 
 				}
 			}
+
+			function token(){
+				  $seed = str_split('abcdefghijklmnopqrstuvwxyz'
+                     .'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+                     .'0123456789'); // and any other characters
+				    shuffle($seed); // probably optional since array_is randomized; this may be redundant
+				    $rand = '';
+				    foreach (array_rand($seed, 10) as $k) $rand .= $seed[$k];
+				 
+				    return $rand;
+				}
 
 
 

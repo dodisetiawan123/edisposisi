@@ -11,7 +11,8 @@
 
     <!-- Responsive datatable examples -->
     <link href="<?php echo base_url('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') ?>" rel="stylesheet" type="text/css" />
-
+    <!-- Sweet Alert-->
+    <link href="<?php echo base_url('assets/libs/sweetalert2/sweetalert2.min.css') ?>" rel="stylesheet" type="text/css" />
     
     <?php include 'd_layouts/head-style.php'; ?>
 </head>
@@ -76,8 +77,12 @@
                                                 <a href="<?=site_url('general/viewfile/'.$data->file_dokumen)?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
                                             </td>
                                             <td><strong>Status :</strong> <?php echo $data->status; ?><br>
-                                                <strong>Ditujukan ke :</strong> 
+                                                <strong>Requestor:</strong> 
                                                 <?php foreach ($model->get_statusdokumen($data->id_dokumen) as $datastatus) {
+                                                    echo $datastatus->first_name.' '.$datastatus->last_name;
+                                                } ?> <br>
+                                                <strong>Ditujukan ke :</strong> 
+                                                <?php foreach ($model->get_statusdokumengm($data->id_dokumen) as $datastatus) {
                                                     echo $datastatus->first_name.' '.$datastatus->last_name;
                                                 } ?>
                                             </td>
@@ -201,6 +206,12 @@
 <!-- Datatable init js -->
 <script src="<?php echo base_url('assets/js/pages/datatables.init.js') ?>"></script>
 
+<!-- Sweet Alerts js -->
+<script src="<?php echo base_url('assets/libs/sweetalert2/sweetalert2.min.js') ?>"></script>
+
+<!-- Sweet alert init js-->
+<script src="<?php echo base_url('assets/js/pages/sweetalert.init.js') ?>"></script>
+
 <!-- App js -->
 <script src="<?php echo base_url('assets/js/app.js') ?>"></script>
 <script type="text/javascript">
@@ -211,6 +222,36 @@
               $("#staticBackdrop").modal('show');
           });
         });
+    
+    <?php if($this->session->flashdata('done')){ ?>
+    $(document).ready(function(){
+         Swal.fire(
+            {
+                title: 'Dokumen berhasil terkirim',
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#5156be',
+                cancelButtonColor: "#fd625e"
+            }
+        )
+
+        });
+    <?php } ?>
+    <?php if($this->session->flashdata('error')){ ?>
+    $(document).ready(function(){
+         Swal.fire(
+            {
+                title: 'Dokumen Gagal terkirim',
+                text : 'Silahkan ulangi lagi',
+                icon: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#5156be',
+                cancelButtonColor: "#fd625e"
+            }
+        )
+
+        });
+    <?php } ?>
 </script>
 
 </body>

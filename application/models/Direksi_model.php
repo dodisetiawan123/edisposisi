@@ -40,6 +40,18 @@ class Direksi_model extends CI_Model {
         $this->db->join('dokumen_user', 'dokumen_user.id_users = users.id', 'left' );
         $this->db->join('users_groups', 'users_groups.user_id = users.id', 'left' );
         $this->db->where('id_dokumen', $id_dokumen);
+        $this->db->where('group_id', 2);
+        $query=$this->db->get();
+        return $query->result();
+    }
+
+    public function get_statusdokumengm($id_dokumen)
+    {
+        $this->db->select('users.first_name,users.last_name');
+        $this->db->from('users');
+        $this->db->join('dokumen_user', 'dokumen_user.id_users = users.id', 'left' );
+        $this->db->join('users_groups', 'users_groups.user_id = users.id', 'left' );
+        $this->db->where('id_dokumen', $id_dokumen);
         $this->db->where('group_id', 3);
         $query=$this->db->get();
         return $query->result();
@@ -58,6 +70,29 @@ class Direksi_model extends CI_Model {
          $this->db->where('id_dokumen', $id_dokumen);
          $this->db->update('dokumen', $data);
             
+    }
+
+
+    public function get_datausers($id_users)
+    {
+        $this->db->select('users.first_name,users.last_name,users.phone');
+        $this->db->from('users');
+        $this->db->where('id', $id_users);
+        $query=$this->db->get();
+        return $query->row_array();
+    }
+
+    public function get_datadokumen($id_dokumen)
+    {
+        $this->db->select('dokumen.nama_pengirim,dokumen.no_agenda,dokumen.tanggal,dokumen.perihal,dokumen.token,users.first_name,users.last_name');
+        $this->db->from('dokumen');
+        $this->db->join('dokumen_user', 'dokumen_user.id_dokumen = dokumen.id_dokumen', 'left' );
+        $this->db->join('users', 'dokumen_user.id_users = users.id', 'left' );
+        $this->db->join('users_groups', 'users_groups.user_id = users.id', 'left' );
+        $this->db->where('dokumen.id_dokumen', $id_dokumen);
+        $this->db->where('group_id', 2);
+        $query=$this->db->get();
+        return $query->row_array();
     }
 
     
