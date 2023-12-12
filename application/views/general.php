@@ -73,7 +73,7 @@
                                                 <strong>Tanggal  :</strong> <?php echo $data->tanggal; ?><br>
                                                 <strong>Perihal  :</strong> <?php echo $data->perihal; ?>
                                             </td>
-                                            <th> <a href="<?=site_url('direksi/viewfile/'.'Lampiran.pdf')?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
+                                            <th> <a href="<?=site_url('direksi/viewfile/'.$data->file_dokumen)?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
                                             </th>
                                             <td>
                                                 <strong>Status : </strong> <?php echo $data->status ?><br>
@@ -87,7 +87,7 @@
                                             </td>
                                              <td>
                                                 <?php if ($data->status == 'OnProgress GM'): ?>
-                                               <button type="button" class="btn btn-success btn-md accept" value="<?php echo $data->id_dokumen ?>" >Accept</button>  
+                                               <button type="button" class="btn btn-success btn-md open-homeEvents" data-bs-toggle="modal" data-bs-target="#accept" data-id="<?php echo $data->id_dokumen ?>">Accept</button>  
                                                 <?php endif ?>
                                             </td>
                                         </tr>
@@ -167,12 +167,9 @@
 <!-- App js -->
 <script src="<?php echo base_url('assets/js/app.js') ?>"></script>
 <script type="text/javascript">
-    $(document).ready(function(){
-          $(".accept").click(function(){ 
-              var butval = $(this).val();     
-              $("#id_dokumen").val(butval);
-              $("#accept").modal('show');
-          });
+     $(document).on("click", ".open-homeEvents", function () {
+             var eventId = $(this).data('id');
+             $("#id_dokumen").val(eventId);
         });
 </script>
 </body>

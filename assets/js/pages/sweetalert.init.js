@@ -8,15 +8,15 @@ File: Sweatalert Js File
 
 
 //position
-document.getElementById("sa-position").addEventListener("click", function() {
-    Swal.fire({
-        position: 'top-midle',
-        icon: 'success',
-        title: 'Data berhasil di simpan',
-        showConfirmButton: false,
-        timer: 1500
-    })
-});
+// document.getElementById("sa-position").addEventListener("click", function() {
+//     Swal.fire({
+//         position: 'top-midle',
+//         icon: 'success',
+//         title: 'Data berhasil di simpan',
+//         showConfirmButton: false,
+//         timer: 1500
+//     })
+// });
 
 
 

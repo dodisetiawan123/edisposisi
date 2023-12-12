@@ -52,8 +52,8 @@
           
 
             <div class="dropdown d-inline-block">
-                <button type="button" class="btn header-item bg-soft-light border-start border-end" >Login
-                </button>
+                <a href="<?php echo site_url('auth/login') ?>"><button type="button" class="btn header-item bg-soft-light border-start border-end" >Login
+                </button></a>
             </div>
 
         </div>

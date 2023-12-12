@@ -58,11 +58,11 @@
                             </div>
                             <div class="card-body">
 
-                                <table id="datatable" class="table table-bordered table-hover dt-responsive  nowrap w-100">
+                                <table id="datatable" class="table table-bordered table-hover dt-responsive w-100">
                                     <thead class="table-light">
                                         <tr>
                                             <th>No</th>
-                                            <th>Detail</th>
+                                            <th style="max-width:300px">Detail</th>
                                             <th>Status</th>
                                             <th>Lampiran</th>
                                             <th>Aksi</th>
@@ -98,7 +98,7 @@
                                             <td>
                                                 <?php if ($data->status == 'OnProcess'): ?>
                                                 <button type="button" class="btn btn-secondary btn-md">Edit</button>
-                                                <button type="button" class="btn btn-success btn-md update" value="<?php echo $data->id_dokumen; ?>">Lanjutkan Dokumen</button>
+                                                <button type="button" class="btn btn-success btn-md open-homeEvents" data-bs-toggle="modal" data-bs-target="#lanjutkan" data-id="<?php echo $data->id_dokumen ?>">Lanjutkan Dokumen</button>
                                                     
                                                 <?php endif ?>
                                             </td>
@@ -206,8 +206,8 @@
                                     </div><!-- /.modal -->
 
                                      <!-- Static Backdrop Modal -->
-                                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                                    <div class="modal fade" id="lanjutkan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                                             <div class="modal-content">
                                             <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('admin/disposisi/') ?>"> 
                                                 <div class="modal-header">
@@ -279,13 +279,9 @@
 <script src="<?php echo base_url('assets/js/app.js') ?>"></script>
 
 <script type="text/javascript">
-    $(document).ready(function(){
-
-          $(".update").click(function(){ 
-              var butval = $(this).val();     
-              $("#id_dokumen").val(butval);
-              $("#staticBackdrop").modal('show');
-          });
+      $(document).on("click", ".open-homeEvents", function () {
+             var eventId = $(this).data('id');
+             $("#id_dokumen").val(eventId);
         });
 
     <?php if($this->session->flashdata('done')){ ?>

@@ -49,11 +49,11 @@
                             
                             <div class="card-body">
 
-                                <table id="datatable" class="table table-bordered table-hover dt-responsive  nowrap w-100">
+                                <table id="datatable" class="table table-bordered table-hover dt-responsive w-100">
                                     <thead class="table-light">
                                         <tr>
                                             <th>No</th>
-                                            <th>Detail</th>
+                                            <th style="max-width:300px">Detail</th>
                                             <th>Lampiran</th>
                                             <th>Status</th>
                                             <th>Pilihan</th>
@@ -91,7 +91,7 @@
                                                 <div>
                                                 <?php if ($data->status == 'OnProgress BOD'): ?>
                                                     <div class="btn-group btn-group-example mb-3" role="group">
-                                                        <button type="button" value="<?php echo $data->id_dokumen ?>" class="btn btn-success w-xs update" data-bs-toggle="modal">Accept</button>
+                                                        <button type="button" id="accept" class="btn btn-success w-xs open-homeEvents" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="<?php echo $data->id_dokumen ?>">Accept</button>
                                                         <button type="button" class="btn btn-danger w-xs" data-bs-toggle="modal" data-bs-target="#reject">Reject</button>
                                                     </div>
                                                     
@@ -215,14 +215,12 @@
 <!-- App js -->
 <script src="<?php echo base_url('assets/js/app.js') ?>"></script>
 <script type="text/javascript">
-    $(document).ready(function(){
-          $(".update").click(function(){ 
-              var butval = $(this).val();     
-              $("#id_dokumen").val(butval);
-              $("#staticBackdrop").modal('show');
-          });
-        });
-    
+    $(document).on("click", ".open-homeEvents", function () {
+     var eventId = $(this).data('id');
+     $("#id_dokumen").val(eventId);
+});
+   
+
     <?php if($this->session->flashdata('done')){ ?>
     $(document).ready(function(){
          Swal.fire(
