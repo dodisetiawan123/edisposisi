@@ -28,7 +28,7 @@ class Dokumen extends CI_Controller {
 		
 			$this->data['dokumen'] = $this->dokumen_model->get_dokumen($token);
 			$this->data['users'] = $this->dokumen_model->get_users();
-			$this->load->view('detail', $this->data);
+			$this->load->view('gmdetail', $this->data);
 		}
 
 

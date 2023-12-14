@@ -113,7 +113,7 @@ class Direksi extends CI_Controller {
 				{
 					$data_users = $this->direksi_model->get_datausers($id_users);
 					$data_dokumen = $this->direksi_model->get_datadokumen($id_dokumen);
-					$url = site_url('dokumen/view/');
+					$url = site_url('dokumen/gmview/');
 					
 
 					$message = "*Kepada Yth.*

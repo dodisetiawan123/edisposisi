@@ -115,13 +115,9 @@
 
                                 <div class="d-print-none mt-3">
                                     <div class="float-end">
-                                         <?php if ($dokumen->status == 'OnProgress BOD'): ?>
-                                                    <div class="btn-group btn-group-example mb-3" role="group">
-                                                        <button type="button" id="accept" class="btn btn-success w-xs open-homeEvents" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="<?php echo $dokumen->id_dokumen ?>">Accept</button>
-                                                        <button type="button" class="btn btn-danger w-xs" data-bs-toggle="modal" data-bs-target="#reject">Reject</button>
-                                                    </div>
-                                                    
-                                         <?php endif ?>
+                                        <?php if ($dokumen->status == 'OnProgress GM'): ?>
+                                               <button type="button" class="btn btn-success btn-md open-homeEvents" data-bs-toggle="modal" data-bs-target="#accept" data-id="<?php echo $dokumen->id_dokumen ?>">Accept</button>  
+                                          <?php endif ?>
                                     </div>
                                 </div>
                             </div>

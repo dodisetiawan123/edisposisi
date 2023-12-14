@@ -97,7 +97,7 @@
                                             </td>
                                             <td>
                                                 <?php if ($data->status == 'OnProcess'): ?>
-                                                <button type="button" class="btn btn-secondary btn-md">Edit</button>
+                                                <button type="button" class="btn btn-danger btn-md">delete</button>
                                                 <button type="button" class="btn btn-success btn-md open-homeEvents" data-bs-toggle="modal" data-bs-target="#lanjutkan" data-id="<?php echo $data->id_dokumen ?>">Lanjutkan Dokumen</button>
                                                     
                                                 <?php endif ?>
