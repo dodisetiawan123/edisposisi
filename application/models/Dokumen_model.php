@@ -12,7 +12,7 @@ class Dokumen_model extends CI_Model {
 
     public function get_dokumen($token)
     {
-        $this->db->select('dokumen.id_dokumen,dokumen.nama_pengirim,dokumen.no_surat,dokumen.no_agenda,dokumen.tanggal,dokumen.perihal,dokumen.file_dokumen,status,dokumen_user.keterangan');
+        $this->db->select('dokumen.token,dokumen.id_dokumen,dokumen.nama_pengirim,dokumen.no_surat,dokumen.no_agenda,dokumen.tanggal,dokumen.perihal,dokumen.file_dokumen,status,dokumen_user.keterangan');
         $this->db->from('dokumen');
         $this->db->join('dokumen_user', 'dokumen_user.id_dokumen = dokumen.id_dokumen', 'left' );
         $this->db->where('token', $token);
@@ -72,6 +72,8 @@ class Dokumen_model extends CI_Model {
          $this->db->update('dokumen', $data);
             
     }
+
+    
 
 
     public function get_datausers($id_users)

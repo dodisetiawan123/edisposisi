@@ -8,6 +8,8 @@
       <!-- DataTables -->
     <link href="<?php echo base_url('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') ?>" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url('assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') ?>" rel="stylesheet" type="text/css" />
+    <!-- Sweet Alert-->
+    <link href="<?php echo base_url('assets/libs/sweetalert2/sweetalert2.min.css') ?>" rel="stylesheet" type="text/css" />
 
     <!-- Responsive datatable examples -->
     <link href="<?php echo base_url('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') ?>" rel="stylesheet" type="text/css" />
@@ -102,7 +104,7 @@
                                                     <td>
                                                         <strong>Lampiran</strong> 
                                                     </td>
-                                                    <td>: <a href="<?php echo base_url("filedoc/".$dokumen->file_dokumen) ?>" target="_blank"><button type="button" class="btn btn-secondary btn-rounded waves-effect waves-light">Buka dokumen</button></a></td>
+                                                    <td>: <a href="<?php echo base_url("filedoc/".$dokumen->file_dokumen) ?>" target="_blank"><button type="button" class="btn btn-secondary btn-rounded waves-effect waves-light">Preview</button></a></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -120,6 +122,9 @@
                                                     </div>
                                                     
                                          <?php endif ?>
+                                         <?php if ($dokumen->status == 'OnProgress GM'): ?>
+                                               <button type="button" class="btn btn-success btn-md open-homeEvents" data-bs-toggle="modal" data-bs-target="#accept" data-id="<?php echo $dokumen->id_dokumen ?>">Accept</button>  
+                                          <?php endif ?>
                                     </div>
                                 </div>
                             </div>
@@ -144,7 +149,10 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">    
-                                                     <input type="hidden" id="id_dokumen" name="id_dokumen" value="<?php echo $dokumen->id_dokumen ?>">
+                                                     <input type="text" id="id_dokumen" name="id_dokumen" value="<?php echo $dokumen->
+                                                     id_dokumen ?>">
+                                                     <input type="text" name="token" value="<?php echo $dokumen->
+                                                     token ?>">
                                                     <div class="form-group mb-3">
                                                         <label for="exampleFormControlTextarea1">Keterangan</label>
                                                         <textarea class="form-control" name="keterangan" id="exampleFormControlTextarea1" rows="3"></textarea>
@@ -190,6 +198,32 @@
                                         </div>
                                     </div>
 
+                                     <div class="modal fade" id="accept" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                                            <div class="modal-content">
+                                                <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('dokumen/acceptdokumen/') ?>">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="staticBackdropLabel">Accept dokumen?</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>
+                                                        <h5>
+                                                    <input type="hidden" name="token" value="<?php echo $dokumen->
+                                                     token ?>">
+                                                    <input type="hidden" name="id_dokumen" id="id_dokumen" value="<?php echo $dokumen->
+                                                     id_dokumen ?>"></h5>
+                                                    </p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-success">Accept</button>
+                                                </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
 <!-- Right Sidebar -->
 <?php include 'detail_layouts/right-sidebar.php'; ?>
 <!-- /Right-bar -->
@@ -214,11 +248,49 @@
 <script src="<?php echo base_url('assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') ?>"></script>
 <script src="<?php echo base_url('assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') ?>"></script>
 
+<!-- Sweet Alerts js -->
+<script src="<?php echo base_url('assets/libs/sweetalert2/sweetalert2.min.js') ?>"></script>
+
+<!-- Sweet alert init js-->
+<script src="<?php echo base_url('assets/js/pages/sweetalert.init.js') ?>"></script>
+
 <!-- Datatable init js -->
 <script src="<?php echo base_url('assets/js/pages/datatables.init.js') ?>"></script>
 
 <!-- App js -->
 <script src="<?php echo base_url('assets/js/app.js') ?>"></script>
+</script>
+<script type="text/javascript">
+  
+    <?php if($this->session->flashdata('done')){ ?>
+    $(document).ready(function(){
+         Swal.fire(
+            {
+                title: 'Dokumen berhasil terkirim',
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#5156be',
+                cancelButtonColor: "#fd625e"
+            }
+        )
+
+        });
+    <?php } ?>
+    <?php if($this->session->flashdata('error')){ ?>
+    $(document).ready(function(){
+         Swal.fire(
+            {
+                title: 'Dokumen Gagal terkirim',
+                text : 'Silahkan ulangi lagi',
+                icon: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#5156be',
+                cancelButtonColor: "#fd625e"
+            }
+        )
+
+        });
+    <?php } ?>
 </script>
 </body>
 

@@ -22,7 +22,8 @@ class Dokumen extends CI_Controller {
 			$this->load->view('detail', $this->data);
 		}
 
-	public function view_gm($token)
+
+	public function gmview($token)
 	{
 		
 			$this->data['dokumen'] = $this->dokumen_model->get_dokumen($token);
@@ -49,6 +50,7 @@ class Dokumen extends CI_Controller {
 			$data_status = array(
 				'status' => 'OnProgress GM'
 			);
+			$token = $this->input->post('token');
 
 			$id_dokumen = $this->input->post('id_dokumen');
 
@@ -56,17 +58,35 @@ class Dokumen extends CI_Controller {
 			$this->dokumen_model->updatestatus($data_status,$id_dokumen);		
 
             $this->session->set_flashdata('done', 'Data berhasil tersimpan');
-            redirect('direksi/list_surat');
+            redirect('dokumen/view/'.$token);
 
 			}else if($response == "{}") {
 			$this->disposisi();
 
 			}else{
 			$this->session->set_flashdata('error', 'Data gagal terkirim');
-            redirect('direksi/list_surat');
+            redirect('dokumen/view/'.$token);
 			}
 			
 		
+	}
+
+		public function acceptdokumen()
+	{
+		
+			
+
+			$data_status = array(
+				'status' => 'OnAction GM'
+			);
+
+			$id_dokumen = $this->input->post('id_dokumen');
+			$this->dokumen_model->updatestatus($data_status,$id_dokumen);
+
+			$token = $this->input->post('token');		
+
+            $this->session->set_flashdata('done', 'Data berhasil tersimpan');
+            redirect('dokumen/gmview/'.$token);
 	}
 
 	public function sendwa($id_users,$id_dokumen)
@@ -74,7 +94,7 @@ class Dokumen extends CI_Controller {
 				
 					$data_users = $this->dokumen_model->get_datausers($id_users);
 					$data_dokumen = $this->dokumen_model->get_datadokumen($id_dokumen);
-					$url = site_url('dokumen/view/');
+					$url = site_url('dokumen/gmview/');
 					
 
 					$message = "*Kepada Yth.*
