@@ -92,7 +92,7 @@
                                                 <?php if ($data->status == 'OnProgress BOD'): ?>
                                                     <div class="btn-group btn-group-example mb-3" role="group">
                                                         <button type="button" id="accept" class="btn btn-success w-xs open-homeEvents" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="<?php echo $data->id_dokumen ?>">Accept</button>
-                                                        <button type="button" class="btn btn-danger w-xs" data-bs-toggle="modal" data-bs-target="#reject">Reject</button>
+                                                        <button type="button" class="btn btn-danger w-xs open-homeEvents-reject" data-bs-toggle="modal" data-bs-target="#reject" data-id="<?php echo $data->id_dokumen ?>">Reject</button>
                                                     </div>
                                                     
                                                 <?php endif ?>
@@ -157,21 +157,24 @@
                                         <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
+
                                                     <h5 class="modal-title" id="staticBackdropLabel">Reject Dokumen</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form>
+                                                    <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('direksi/reject/') ?>"> 
+                                                        <input type="hidden" id="id_dokumenreject" name="id_dokumen">
                                                     <div class="form-group mb-3">
                                                         <label for="exampleFormControlTextarea1">Keterangan</label>
-                                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="keterangan"></textarea>
                                                     </div>
-                                                  </form>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-danger">Reject</button>
+                                                    <button type="submit" class="btn btn-danger">Reject</button>
                                                 </div>
+
+                                                  </form>
                                             </div>
                                         </div>
                                     </div>
@@ -218,6 +221,11 @@
     $(document).on("click", ".open-homeEvents", function () {
      var eventId = $(this).data('id');
      $("#id_dokumen").val(eventId);
+});
+
+      $(document).on("click", ".open-homeEvents-reject", function () {
+     var eventId = $(this).data('id');
+     $("#id_dokumenreject").val(eventId);
 });
    
 

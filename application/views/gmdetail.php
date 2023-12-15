@@ -92,13 +92,17 @@
                                                     <td>
                                                         <strong>Requestor</strong> 
                                                     </td>
-                                                    <td>: </td>
+                                                    <td>: <?php foreach ($model->get_statusdokumen($dokumen->id_dokumen) as $datastatus) {
+                                                    echo $datastatus->first_name.' '.$datastatus->last_name;
+                                                } ?></td>
                                                 </tr>
                                                  <tr>
                                                     <td>
                                                         <strong>Ditujukan ke</strong> 
                                                     </td>
-                                                    <td>: </td>
+                                                    <td>: <?php foreach ($model->get_statusdokumengm($dokumen->id_dokumen) as $datastatus) {
+                                                    echo $datastatus->first_name.' '.$datastatus->last_name;
+                                                } ?></td>
                                                 </tr>
                                                  <tr>
                                                     <td>

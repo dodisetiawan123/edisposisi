@@ -62,7 +62,7 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>No</th>
-                                            <th style="max-width:300px">Detail</th>
+                                            <th style="max-width:270px">Detail</th>
                                             <th>Status</th>
                                             <th>Lampiran</th>
                                             <th>Aksi</th>
@@ -97,7 +97,7 @@
                                             </td>
                                             <td>
                                                 <?php if ($data->status == 'OnProcess'): ?>
-                                                <button type="button" class="btn btn-danger btn-md">delete</button>
+                                                <a href="<?php echo site_url('admin/delete/'.$data->id_dokumen) ?>" onclick="return confirm('Apakah anda yakin?')"><button type="button" class="btn btn-danger btn-md">delete</button></a>
                                                 <button type="button" class="btn btn-success btn-md open-homeEvents" data-bs-toggle="modal" data-bs-target="#lanjutkan" data-id="<?php echo $data->id_dokumen ?>">Lanjutkan Dokumen</button>
                                                     
                                                 <?php endif ?>

@@ -19,6 +19,7 @@ class Dokumen extends CI_Controller {
 		
 			$this->data['dokumen'] = $this->dokumen_model->get_dokumen($token);
 			$this->data['users'] = $this->dokumen_model->get_users();
+			$this->data['model'] = $this->dokumen_model;
 			$this->load->view('detail', $this->data);
 		}
 
@@ -28,6 +29,7 @@ class Dokumen extends CI_Controller {
 		
 			$this->data['dokumen'] = $this->dokumen_model->get_dokumen($token);
 			$this->data['users'] = $this->dokumen_model->get_users();
+			$this->data['model'] = $this->dokumen_model;
 			$this->load->view('gmdetail', $this->data);
 		}
 
@@ -136,6 +138,32 @@ Terimakasih";
 
 				
 			}
+
+
+	
+     public function get_statusdokumen($id_dokumen)
+    {
+        $this->db->select('users.first_name,users.last_name');
+        $this->db->from('users');
+        $this->db->join('dokumen_user', 'dokumen_user.id_users = users.id', 'left' );
+        $this->db->join('users_groups', 'users_groups.user_id = users.id', 'left' );
+        $this->db->where('id_dokumen', $id_dokumen);
+        $this->db->where('group_id', 2);
+        $query=$this->db->get();
+        return $query->result();
+    }
+
+    public function get_statusdokumengm($id_dokumen)
+    {
+        $this->db->select('users.first_name,users.last_name');
+        $this->db->from('users');
+        $this->db->join('dokumen_user', 'dokumen_user.id_users = users.id', 'left' );
+        $this->db->join('users_groups', 'users_groups.user_id = users.id', 'left' );
+        $this->db->where('id_dokumen', $id_dokumen);
+        $this->db->where('group_id', 3);
+        $query=$this->db->get();
+        return $query->result();
+    }
 
 
 	}

@@ -102,6 +102,50 @@ class Direksi extends CI_Controller {
 		}
 	}
 
+		public function reject()
+	{
+		if (!$this->ion_auth->logged_in())
+		{
+			// redirect them to the login page
+			redirect('auth/login', 'refresh');
+		}
+		else if ($this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
+		{
+			// redirect them to the home page because they must be an administrator to view this
+			show_error('You must be an Member to view this page.');
+		}
+		else
+		{
+			$id_users = '1';
+			$id_dokumen = $this->input->post('id_dokumen');
+
+
+			$response = $this->sendwasekper($id_users,$id_dokumen);
+			$responsedata = json_decode($response, true);
+			if ($responsedata['status'] == true) {
+				
+			$data_status = array(
+				'status' => 'Reject BOD'
+			);
+
+			$id_dokumen = $this->input->post('id_dokumen');
+			$this->direksi_model->updatestatus($data_status,$id_dokumen);		
+
+            $this->session->set_flashdata('done', 'Data berhasil tersimpan');
+            redirect('direksi/list_surat');
+
+			}else if($response == "{}") {
+			$this->reject();
+
+			}else{
+			$this->session->set_flashdata('error', 'Data gagal terkirim');
+            redirect('direksi/list_surat');
+			}
+			
+		}
+	}
+	
+
 	public function sendwa($id_users,$id_dokumen)
 			{
 				if (!$this->ion_auth->logged_in())
@@ -157,6 +201,54 @@ Terimakasih";
 			}
 
 
+			public function sendwasekper($id_users,$id_dokumen)
+			{
+				if (!$this->ion_auth->logged_in())
+				{
+					// redirect them to the login page
+					redirect('auth/login', 'refresh');
+				}
+				else if (!$this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
+				{
+					$data_users = $this->direksi_model->get_datausers($id_users);
+					$data_dokumen = $this->direksi_model->get_datadokumen($id_dokumen);
+					
+
+					$message = "*Kepada Yth.*
+".$data_users['first_name'].' '.$data_users['last_name']." 
+
+Dokumen disposisi baru saja direject dengan informasi berikut ini :
+
+*Pengirim* : ".$data_dokumen['nama_pengirim']." 
+*No Agenda* : ".$data_dokumen['no_agenda']." 
+*Tanggal* : ".$data_dokumen['tanggal']." 
+*Perihal* : ".$data_dokumen['perihal']."
+
+Informasi requestor
+*Requestor* : ".$data_dokumen['first_name'].' '.$data_dokumen['last_name']."
+*Catatan* : ".$this->input->post('keterangan')."
+
+Terimakasih";
+					$curl = curl_init();
+
+					curl_setopt_array($curl, array(
+					  CURLOPT_URL => 'http://wa.simulasi.barata.com/send-message',
+					  CURLOPT_RETURNTRANSFER => true,
+					  CURLOPT_ENCODING => '',
+					  CURLOPT_MAXREDIRS => 10,
+					  CURLOPT_TIMEOUT => 0,
+					  CURLOPT_FOLLOWLOCATION => true,
+					  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+					  CURLOPT_CUSTOMREQUEST => 'POST',
+					  CURLOPT_POSTFIELDS => array('message' => $message,'number' => $data_users['phone'],'file_dikirim'=> ''),
+					));
+
+					$response = curl_exec($curl);
+					curl_close($curl);
+					return $response;
+
+				}
+			}
 	
 
 
