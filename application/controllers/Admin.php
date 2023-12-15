@@ -234,7 +234,7 @@ Terimakasih";
 					$curl = curl_init();
 
 					curl_setopt_array($curl, array(
-					  CURLOPT_URL => 'http://wa.simulasi.barata.com/send-message',
+					  CURLOPT_URL => 'http://waweb.simulasi.barata.com/send-message',
 					  CURLOPT_RETURNTRANSFER => true,
 					  CURLOPT_ENCODING => '',
 					  CURLOPT_MAXREDIRS => 10,
