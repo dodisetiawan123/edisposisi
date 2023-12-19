@@ -12,7 +12,7 @@ class General_model extends CI_Model {
 
     public function get_dokumen($id_users)
     {
-        $this->db->select('dokumen.id_dokumen,dokumen.nama_pengirim,dokumen.no_surat,dokumen.no_agenda,dokumen.tanggal,dokumen.perihal,dokumen.file_dokumen,status,dokumen_user.keterangan');
+        $this->db->select('dokumen.id_dokumen,dokumen.nama_pengirim,dokumen.no_surat,dokumen.no_agenda,dokumen.tanggal,dokumen.perihal,dokumen.file_dokumen,dokumen.status,dokumen_user.keterangan');
         $this->db->from('dokumen');
         $this->db->join('dokumen_user', 'dokumen_user.id_dokumen = dokumen.id_dokumen', 'left' );
         $this->db->where('dokumen_user.id_users', $id_users);

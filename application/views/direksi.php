@@ -52,10 +52,10 @@
                                 <table id="datatable" class="table table-bordered table-hover dt-responsive w-100">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>No</th>
-                                            <th style="max-width:300px">Detail</th>
-                                            <th>Lampiran</th>
-                                            <th>Status</th>
+                                            <th style="max-width:50px">No</th>
+                                            <th style="max-width:270px">Detail</th>
+                                            <th style="max-width:100px">Lampiran</th>
+                                            <th style="max-width:270px">Status</th>
                                             <th>Pilihan</th>
                                         </tr>
                                     </thead>
@@ -76,23 +76,31 @@
                                             <td>
                                                 <a href="<?=site_url('general/viewfile/'.$data->file_dokumen)?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
                                             </td>
-                                            <td><strong>Status :</strong> <?php echo $data->status; ?><br>
-                                                <strong>Requestor:</strong> 
-                                                <?php foreach ($model->get_statusdokumen($data->id_dokumen) as $datastatus) {
-                                                    echo $datastatus->first_name.' '.$datastatus->last_name;
-                                                } ?> <br>
-                                                <strong>Ditujukan ke :</strong> 
-                                                <?php foreach ($model->get_statusdokumengm($data->id_dokumen) as $datastatus) {
-                                                    echo $datastatus->first_name.' '.$datastatus->last_name;
-                                                } ?>
+                                            <td>
+                                                <table class="table table-bordered table-sm">
+                                                  <thead>
+                                                    <tr>
+                                                      <th scope="col">Tujuan dokumen</th>
+                                                      <th scope="col">Status</th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                     <?php foreach ($model->get_statusdokumen($data->id_dokumen) as $datastatus) { ?>
+                                                    <tr>
+                                                      <td><?php echo $datastatus->first_name.' '.$datastatus->last_name; ?></td>
+                                                      <td><?php echo $datastatus->status ?></td>
+                                                    </tr>
+                                                       <?php } ?>
+                                                  </tbody>
+                                                </table>
                                             </td>
                                             
                                             <td>
                                                 <div>
-                                                <?php if ($data->status == 'OnProgress BOD'): ?>
-                                                    <div class="btn-group btn-group-example mb-3" role="group">
-                                                        <button type="button" id="accept" class="btn btn-success w-xs open-homeEvents" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="<?php echo $data->id_dokumen ?>">Accept</button>
-                                                        <button type="button" class="btn btn-danger w-xs open-homeEvents-reject" data-bs-toggle="modal" data-bs-target="#reject" data-id="<?php echo $data->id_dokumen ?>">Reject</button>
+                                                <?php if ($data->status == 'OnProgress'): ?>
+                                                    <div class="">
+                                                        <button type="button" class="btn btn-success w-xs btn-md open-homeEvents-reject" data-bs-toggle="modal" data-bs-target="#reject" data-id="<?php echo $data->id_dokumen ?>">Diterima</button>
+                                                        <button type="button" id="accept" class="btn btn-primary btn-md w-xs open-homeEvents" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="<?php echo $data->id_dokumen ?>">Lanjutkan dokumen</button>
                                                     </div>
                                                     
                                                 <?php endif ?>
@@ -121,7 +129,7 @@
     <!-- end main content-->
      <!-- Static Backdrop Modal -->
                                     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                             <div class="modal-content">
 
                                             <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('direksi/disposisi/') ?>"> 
@@ -135,14 +143,37 @@
                                                         <label for="exampleFormControlTextarea1">Keterangan</label>
                                                         <textarea class="form-control" name="keterangan" id="exampleFormControlTextarea1" rows="3"></textarea>
                                                     </div>
+                                                    <div class="row">
+                                                        <label for="exampleFormControlTextarea1">Lanjutkan ke-</label>
+                                                        <div class="col-md-6">
+                                                             <h5 class="font-size-14 mb-2">DIREKSI
+                                                                </h5>
                                                     <div class="form-group">
-                                                    <label for="exampleFormControlSelect1">Diteruskan ke- </label>
-                                                    <select class="form-control" name="id_users" id="exampleFormControlSelect1">
-                                                       <?php foreach ($users as $data) {?>
-                                                      <option value="<?php echo $data->id ?>"><?php echo $data->first_name.' '.$data->last_name.' ('.$data->email.')' ?></option>
+                                                         <?php foreach ($users as $data) {?>
+                                                        <div class="form-check">
+                                                                    <input class="form-check-input" name="id_users[]" type="checkbox" id="<?php echo $data->id ?>" value="<?php echo $data->id ?>">
+                                                                    <label class="form-check-label" for="<?php echo $data->id ?>">
+                                                                        <?php echo $data->first_name.' '.$data->last_name.'('.$data->email.')' ?>
+                                                                    </label>
+                                                        </div>
                                                         <?php } ?>
-                                                    </select>
-                                                  </div>
+                                                    </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <h5 class="font-size-14 mb-2">GM BIRO/DIVISI
+                                                                </h5>
+                                                    <div class="form-group">
+                                                         <?php foreach ($usersgm as $data) {?>
+                                                        <div class="form-check">
+                                                                    <input class="form-check-input" name="id_users[]" type="checkbox" id="<?php echo $data->id ?>" value="<?php echo $data->id ?>">
+                                                                    <label class="form-check-label" for="<?php echo $data->id ?>">
+                                                                        <?php echo $data->first_name.' '.$data->last_name.'('.$data->email.')' ?>
+                                                                    </label>
+                                                        </div>
+                                                        <?php } ?>
+                                                    </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
@@ -158,11 +189,11 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
 
-                                                    <h5 class="modal-title" id="staticBackdropLabel">Reject Dokumen</h5>
+                                                    <h5 class="modal-title" id="staticBackdropLabel">Terima dokumen</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('direksi/reject/') ?>"> 
+                                                    <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('direksi/acceptdokumen/') ?>"> 
                                                         <input type="hidden" id="id_dokumenreject" name="id_dokumen">
                                                     <div class="form-group mb-3">
                                                         <label for="exampleFormControlTextarea1">Keterangan</label>
@@ -171,7 +202,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-danger">Reject</button>
+                                                    <button type="submit" class="btn btn-success">Terima</button>
                                                 </div>
 
                                                   </form>

@@ -62,9 +62,9 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>No</th>
-                                            <th style="max-width:270px">Detail</th>
-                                            <th>Status</th>
-                                            <th>Lampiran</th>
+                                            <th style="max-width:250px">Detail</th>
+                                            <th style="max-width:100px">Lampiran</th>
+                                            <th style="max-width:200px">Status</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -82,23 +82,31 @@
                                                 <strong>Tanggal  : </strong><?php echo $data->tanggal; ?><br>
                                                 <strong>Perihal  : </strong><?php echo $data->perihal; ?>
                                             </td>
-                                            <td><strong>Status :</strong> <?php echo $data->status; ?><br>
-                                                <strong>Requestor :</strong> 
-                                                <?php foreach ($model->get_statusdokumen($data->id_dokumen) as $datastatus) {
-                                                    echo $datastatus->first_name.' '.$datastatus->last_name;
-                                                } ?><br>
-                                                <strong>Ditujukan ke :</strong> 
-                                                <?php foreach ($model->get_statusdokumengm($data->id_dokumen) as $datastatus) {
-                                                    echo $datastatus->first_name.' '.$datastatus->last_name;
-                                                } ?>
+                                            <td>
+                                                <a href="<?=site_url('admin/viewfile/'.$data->file_dokumen)?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Lihat</button></a>
                                             </td>
                                             <td>
-                                                <a href="<?=site_url('admin/viewfile/'.$data->file_dokumen)?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
+                                                <table class="table table-bordered table-sm">
+                                                  <thead>
+                                                    <tr>
+                                                      <th scope="col">Tujuan dokumen</th>
+                                                      <th scope="col">Status</th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                     <?php foreach ($model->get_statusdokumen($data->id_dokumen) as $datastatus) { ?>
+                                                    <tr>
+                                                      <td><?php echo $datastatus->first_name.' '.$datastatus->last_name; ?></td>
+                                                      <td><?php echo $datastatus->status ?></td>
+                                                    </tr>
+                                                       <?php } ?>
+                                                  </tbody>
+                                                </table>
                                             </td>
                                             <td>
                                                 <?php if ($data->status == 'OnProcess'): ?>
-                                                <a href="<?php echo site_url('admin/delete/'.$data->id_dokumen) ?>" onclick="return confirm('Apakah anda yakin?')"><button type="button" class="btn btn-danger btn-md">delete</button></a>
-                                                <button type="button" class="btn btn-success btn-md open-homeEvents" data-bs-toggle="modal" data-bs-target="#lanjutkan" data-id="<?php echo $data->id_dokumen ?>">Lanjutkan Dokumen</button>
+                                                <a href="<?php echo site_url('admin/delete/'.$data->id_dokumen) ?>" onclick="return confirm('Apakah anda yakin?')"><button type="button" class="btn btn-danger btn-md">hapus</button></a>
+                                                <button type="button" class="btn btn-primary btn-md open-homeEvents" data-bs-toggle="modal" data-bs-target="#lanjutkan" data-id="<?php echo $data->id_dokumen ?>">Lanjutkan Dokumen</button>
                                                     
                                                 <?php endif ?>
                                             </td>
@@ -207,7 +215,7 @@
 
                                      <!-- Static Backdrop Modal -->
                                     <div class="modal fade" id="lanjutkan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                             <div class="modal-content">
                                             <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('admin/disposisi/') ?>"> 
                                                 <div class="modal-header">
@@ -216,15 +224,46 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     <input type="hidden" id="id_dokumen" name="id_dokumen">
-                                                   
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                             <h5 class="font-size-14 mb-2"><i class="mdi mdi-arrow-right text-primary me-1"></i>DIREKSI
+                                                                </h5>
                                                     <div class="form-group">
-                                                    <label for="exampleFormControlSelect1">Pilih User</label>
-                                                    <select class="form-control" id="exampleFormControlSelect1" name="id_users">
-                                                        <?php foreach ($users as $data) {?>
-                                                      <option value="<?php echo $data->id ?>"><?php echo $data->first_name.' '.$data->last_name.'('.$data->email.')' ?></option>
+                                                         <?php foreach ($users as $data) {?>
+                                                        <div class="form-check">
+                                                                    <input class="form-check-input" name="id_users[]" type="checkbox" id="<?php echo $data->id ?>" value="<?php echo $data->id ?>">
+                                                                    <label class="form-check-label" for="<?php echo $data->id ?>">
+                                                                        <?php echo $data->first_name.' '.$data->last_name.'('.$data->email.')' ?>
+                                                                    </label>
+                                                        </div>
                                                         <?php } ?>
-                                                    </select>
                                                     </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <h5 class="font-size-14 mb-2"><i class="mdi mdi-arrow-right text-primary me-1"></i>GM BIRO/DIVISI
+                                                                </h5>
+                                                    <div class="form-group">
+                                                         <?php foreach ($usersgm as $data) {?>
+                                                        <div class="form-check">
+                                                                    <input class="form-check-input" name="id_users[]" type="checkbox" id="<?php echo $data->id ?>" value="<?php echo $data->id ?>">
+                                                                    <label class="form-check-label" for="<?php echo $data->id ?>">
+                                                                        <?php echo $data->first_name.' '.$data->last_name.'('.$data->email.')' ?>
+                                                                    </label>
+                                                        </div>
+                                                        <?php } ?>
+                                                    </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            
+                                                        </div>
+                                                    </div>
+                                                  
+
+
+                                                  
                                                    
                                                 </div>
                                                 <div class="modal-footer">

@@ -30,6 +30,7 @@ class Admin extends CI_Controller {
 		{
 			$this->data['dokumen'] = $this->admin_model->get_dokumen();
 			$this->data['users'] = $this->admin_model->get_users();
+			$this->data['usersgm'] = $this->admin_model->get_usersgm();
 			$this->data['model'] = $this->admin_model;
 
 			$this->load->view('sekper', $this->data);
@@ -110,36 +111,37 @@ class Admin extends CI_Controller {
 			$id_users = $this->input->post('id_users');
 			$id_dokumen = $this->input->post('id_dokumen');
 
-			$response = $this->sendwa($id_users,$id_dokumen);
-			$responsedata = json_decode($response, true);
+			foreach ($id_users as $user) {
+				$token = $this->token();
+				$response = $this->sendwa($user,$id_dokumen,$token);
+				$responsedata = json_decode($response, true);
 
-			if ($responsedata['status'] == true) {
-			
-			$data_dokumen = array(
-				'id_users' => $this->input->post('id_users'),
-				'id_dokumen' => $this->input->post('id_dokumen'),
-				'responswa' => $response
-			);
+				if ($responsedata['status'] == true) {
+				
+				$data_dokumen = array(
+					'id_users' => $user,
+					'id_dokumen' => $this->input->post('id_dokumen'),
+					'status' => 'OnProgress',
+					'gmtoken' => $token,
+					'responswa' => $response
+				);
 
-			$data_status = array(
-				'status' => 'OnProgress BOD'
-			);
+				$this->admin_model->insertdokumenuser($data_dokumen);
 
-			$id_dokumen = $this->input->post('id_dokumen');
-			$this->admin_model->insertdokumenuser($data_dokumen);
-			$this->admin_model->updatestatus($data_status,$id_dokumen);	
+				}else{
+				
+				$this->session->set_flashdata('error', 'Data gagal terkirim');
+            	redirect('admin/list_surat');
+				
+				}
 
-            $this->session->set_flashdata('done', 'Data berhasil terkirim');
-            redirect('admin/list_surat');
-
-			} else if($response == "{}") {
-			 $this->disposisi();
-			}else{
-			
-			$this->session->set_flashdata('error', 'Data gagal terkirim');
-            redirect('admin/list_surat');
-			
 			}
+			$data_status = array(
+				'status' => 'OnProgress'
+			);
+			$this->admin_model->updatestatus($data_status,$id_dokumen);		
+			$this->session->set_flashdata('done', 'Data berhasil terkirim');
+            redirect('admin/list_surat');
 			
 		}
 	}
@@ -203,7 +205,7 @@ class Admin extends CI_Controller {
 				}
 			}
 
-			public function sendwa($id_users,$id_dokumen)
+			public function sendwa($id_users,$id_dokumen,$token)
 			{
 				if (!$this->ion_auth->logged_in())
 				{
@@ -214,7 +216,7 @@ class Admin extends CI_Controller {
 				{
 					$data_users = $this->admin_model->get_datausers($id_users);
 					$data_dokumen = $this->admin_model->get_datadokumen($id_dokumen);
-					$url = site_url('dokumen/view/');
+					$url = site_url('dokumen/view/'.$token);
 					$message = "*Kepada Yth.*
 ".$data_users['first_name'].' '.$data_users['last_name']." 
 
@@ -227,7 +229,7 @@ Dokumen disposisi baru saja ditambahkan dengan informasi berikut ini :
 
 Silahkan klik link di bawah ini untuk detail informasi dan tindakan lebih lanjut :
 
-".$url.$data_dokumen['token']."
+".$url."
 
 Terimakasih";
 				

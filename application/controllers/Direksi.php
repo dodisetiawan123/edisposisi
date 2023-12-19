@@ -26,7 +26,8 @@ class Direksi extends CI_Controller {
 		{
 		$id_users = $this->ion_auth->user()->row()->id;
 		$this->data['dokumen'] = $this->direksi_model->get_dokumen($id_users);
-		$this->data['users'] = $this->direksi_model->get_users();
+			$this->data['users'] = $this->direksi_model->get_users();
+			$this->data['usersgm'] = $this->direksi_model->get_usersgm();
 		$this->data['model'] = $this->direksi_model;
 
 		$this->load->view('direksi', $this->data);
@@ -142,6 +143,33 @@ class Direksi extends CI_Controller {
             redirect('direksi/list_surat');
 			}
 			
+		}
+	}
+
+	public function acceptdokumen()
+	{
+		if (!$this->ion_auth->logged_in())
+		{
+			// redirect them to the login page
+			redirect('auth/login', 'refresh');
+		}
+		else if ($this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
+		{
+			// redirect them to the home page because they must be an administrator to view this
+			show_error('You must be an Member to view this page.');
+		}
+		else
+		{
+			exit;
+			$data_status = array(
+				'status' => 'accepted'
+			);
+
+			$id_dokumen = $this->input->post('id_dokumen');
+			$this->general_model->updatestatus($data_status,$id_dokumen);		
+
+            $this->session->set_flashdata('done', 'Data berhasil tersimpan');
+            redirect('general/list_surat');
 		}
 	}
 	
