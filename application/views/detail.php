@@ -152,8 +152,7 @@
                                                 <div class="modal-body">    
                                                      <input type="hidden" id="id_dokumen" name="id_dokumen" value="<?php echo $dokumen->
                                                      id_dokumen ?>">
-                                                     <input type="hidden" name="token" value="<?php echo $dokumen->
-                                                     token ?>">
+                                                     <input type="hidden" name="token" value="<?php echo $dokumen->token ?>">
                                                     <div class="form-group mb-3">
                                                         <label for="exampleFormControlTextarea1">Keterangan</label>
                                                         <textarea class="form-control" name="keterangan" id="exampleFormControlTextarea1" rows="3"></textarea>

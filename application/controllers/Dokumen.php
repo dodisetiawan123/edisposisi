@@ -42,6 +42,7 @@ class Dokumen extends CI_Controller {
 
 			$response = $this->sendwa($id_users,$id_dokumen);
 			$responsedata = json_decode($response, true);
+			$token = $this->input->post('token');
 
 			if ($responsedata['status'] == true) {
 				$data_dokumen = array(
@@ -52,7 +53,7 @@ class Dokumen extends CI_Controller {
 			$data_status = array(
 				'status' => 'OnProgress GM'
 			);
-			$token = $this->input->post('token');
+			
 
 			$id_dokumen = $this->input->post('id_dokumen');
 
@@ -121,7 +122,7 @@ Terimakasih";
 					$curl = curl_init();
 
 					curl_setopt_array($curl, array(
-					  CURLOPT_URL => 'http://wa.simulasi.barata.com/send-message',
+					  CURLOPT_URL => 'http://waweb.simulasi.barata.com/send-message',
 					  CURLOPT_RETURNTRANSFER => true,
 					  CURLOPT_ENCODING => '',
 					  CURLOPT_MAXREDIRS => 10,
