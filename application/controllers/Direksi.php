@@ -26,8 +26,8 @@ class Direksi extends CI_Controller {
 		{
 		$id_users = $this->ion_auth->user()->row()->id;
 		$this->data['dokumen'] = $this->direksi_model->get_dokumen($id_users);
-			$this->data['users'] = $this->direksi_model->get_users();
-			$this->data['usersgm'] = $this->direksi_model->get_usersgm();
+		$this->data['users'] = $this->direksi_model->get_users();
+		$this->data['usersgm'] = $this->direksi_model->get_usersgm();
 		$this->data['model'] = $this->direksi_model;
 
 		$this->load->view('direksi', $this->data);
@@ -70,35 +70,41 @@ class Direksi extends CI_Controller {
 			$id_users = $this->input->post('id_users');
 			$id_dokumen = $this->input->post('id_dokumen');
 
-
-			$response = $this->sendwa($id_users,$id_dokumen);
-			$responsedata = json_decode($response, true);
+			foreach ($id_users as $user) {
+				$token = $this->token();
+				$response = $this->sendwa($user,$id_dokumen,$token);
+				$responsedata = json_decode($response, true);
 
 			if ($responsedata['status'] == true) {
 				$data_dokumen = array(
-				'id_users' => $this->input->post('id_users'),
+				'id_users' => $user,
+				'id_dokumen' => $this->input->post('id_dokumen'),
 				'keterangan' => $this->input->post('keterangan'),
-				'id_dokumen' => $this->input->post('id_dokumen')
-			);
-			$data_status = array(
-				'status' => 'OnProgress GM'
+				'status' => 'OnProgress',
+				'gmtoken' => $token,
+				'responswa' => $response
 			);
 
-			$id_dokumen = $this->input->post('id_dokumen');
 
 			$this->direksi_model->insertdokumenuser($data_dokumen);
-			$this->direksi_model->updatestatus($data_status,$id_dokumen);		
-
-            $this->session->set_flashdata('done', 'Data berhasil tersimpan');
-            redirect('direksi/list_surat');
-
-			}else if($response == "{}") {
-			$this->disposisi();
 
 			}else{
+
 			$this->session->set_flashdata('error', 'Data gagal terkirim');
             redirect('direksi/list_surat');
 			}
+
+			}
+
+			$data_status = array(
+				'status' => 'Continued'
+			);
+			$id_userslogin =  $this->ion_auth->user()->row()->id ;
+			$this->direksi_model->updatestatusdokumenuser($data_status,$id_dokumen,$id_userslogin);		
+
+            $this->session->set_flashdata('done', 'Data berhasil tersimpan');
+            redirect('direksi/list_surat');
+			
 			
 		}
 	}
@@ -160,21 +166,22 @@ class Direksi extends CI_Controller {
 		}
 		else
 		{
-			exit;
 			$data_status = array(
-				'status' => 'accepted'
+				'status' => 'Accepted',
+				'keterangan' => $this->input->post('keterangan')
 			);
 
 			$id_dokumen = $this->input->post('id_dokumen');
-			$this->general_model->updatestatus($data_status,$id_dokumen);		
+			$id_users = $this->input->post('id_users');
+			$this->direksi_model->updatestatusdokumenuser($data_status,$id_dokumen,$id_users);		
 
             $this->session->set_flashdata('done', 'Data berhasil tersimpan');
-            redirect('general/list_surat');
+            redirect('direksi/list_surat');
 		}
 	}
 	
 
-	public function sendwa($id_users,$id_dokumen)
+	public function sendwa($id_users,$id_dokumen,$token)
 			{
 				if (!$this->ion_auth->logged_in())
 				{
@@ -185,7 +192,7 @@ class Direksi extends CI_Controller {
 				{
 					$data_users = $this->direksi_model->get_datausers($id_users);
 					$data_dokumen = $this->direksi_model->get_datadokumen($id_dokumen);
-					$url = site_url('dokumen/gmview/');
+					$url = site_url('dokumen/gmview/'.$token);
 					
 
 					$message = "*Kepada Yth.*
@@ -204,7 +211,7 @@ Informasi requestor
 
 Silahkan klik link di bawah ini untuk detail informasi dan tindakan lebih lanjut :
 
-".$url.$data_dokumen['token']."
+".$url."
 
 Terimakasih";
 					$curl = curl_init();
@@ -277,6 +284,17 @@ Terimakasih";
 
 				}
 			}
+
+			function token(){
+				  $seed = str_split('abcdefghijklmnopqrstuvwxyz'
+                     .'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+                     .'0123456789'); // and any other characters
+				    shuffle($seed); // probably optional since array_is randomized; this may be redundant
+				    $rand = '';
+				    foreach (array_rand($seed, 10) as $k) $rand .= $seed[$k];
+				 
+				    return $rand;
+				}
 	
 
 

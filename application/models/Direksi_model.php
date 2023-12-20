@@ -12,7 +12,7 @@ class Direksi_model extends CI_Model {
 
     public function get_dokumen($id_users)
     {
-        $this->db->select('dokumen.id_dokumen,dokumen.nama_pengirim,dokumen.no_surat,dokumen.no_agenda,dokumen.tanggal,dokumen.perihal,dokumen.file_dokumen,dokumen.status');
+        $this->db->select('dokumen.id_dokumen,dokumen.nama_pengirim,dokumen.no_surat,dokumen.no_agenda,dokumen.tanggal,dokumen.perihal,dokumen.file_dokumen,dokumen.status,dokumen_user.status as status_dokumen');
         $this->db->from('dokumen');
         $this->db->join('dokumen_user', 'dokumen_user.id_dokumen = dokumen.id_dokumen', 'left' );
         $this->db->where('dokumen_user.id_users', $id_users);
@@ -78,7 +78,15 @@ class Direksi_model extends CI_Model {
     public function updatestatus($data,$id_dokumen)
     {
          $this->db->where('id_dokumen', $id_dokumen);
-         $this->db->update('dokumen', $data);
+         $this->db->update('dokumen_user', $data);
+            
+    }
+
+    public function updatestatusdokumenuser($data,$id_dokumen,$id_users)
+    {
+         $this->db->where('id_dokumen', $id_dokumen);
+         $this->db->where('id_users', $id_users);
+         $this->db->update('dokumen_user', $data);
             
     }
 

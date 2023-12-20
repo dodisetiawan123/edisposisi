@@ -52,11 +52,11 @@
                                 <table id="datatable" class="table table-bordered table-hover dt-responsive w-100">
                                     <thead class="table-light">
                                         <tr>
-                                            <th style="max-width:50px">No</th>
-                                            <th style="max-width:270px">Detail</th>
+                                            <th style="max-width:20px">No</th>
+                                            <th style="max-width:350px">Detail</th>
                                             <th style="max-width:100px">Lampiran</th>
                                             <th style="max-width:270px">Status</th>
-                                            <th>Pilihan</th>
+                                            <th style="min-width:210px">Pilihan</th>
                                         </tr>
                                     </thead>
 
@@ -70,11 +70,11 @@
                                                <strong> Pengirim :</strong> <?php echo $data->nama_pengirim; ?> <br>
                                                <strong> No Surat :</strong> <?php echo $data->no_surat; ?> <br>
                                                <strong> No Agenda :</strong> <?php echo $data->no_agenda; ?> <br>
-                                                <strong>Tanggal  :</strong><?php echo $data->tanggal; ?><br>
+                                                <strong>Diterima Tanggal  :</strong><?php echo $data->tanggal; ?><br>
                                                 <strong>Perihal  :</strong><?php echo $data->perihal; ?>
                                             </td>
                                             <td>
-                                                <a href="<?=site_url('general/viewfile/'.$data->file_dokumen)?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Preview</button></a>
+                                                <a href="<?=site_url('general/viewfile/'.$data->file_dokumen)?>" target="_blank"><button type="button" class="btn btn-secondary btn-sm">Lihat</button></a>
                                             </td>
                                             <td>
                                                 <table class="table table-bordered table-sm">
@@ -85,10 +85,16 @@
                                                     </tr>
                                                   </thead>
                                                   <tbody>
-                                                     <?php foreach ($model->get_statusdokumen($data->id_dokumen) as $datastatus) { ?>
+                                                <?php foreach ($model->get_statusdokumen($data->id_dokumen) as $datastatus) { ?>
                                                     <tr>
                                                       <td><?php echo $datastatus->first_name.' '.$datastatus->last_name; ?></td>
-                                                      <td><?php echo $datastatus->status ?></td>
+                                                      <td style="width: 80px;" class="<?php if ($datastatus->status == 'Accepted') {
+                                                          echo 'bg-success';
+                                                      } else if ($datastatus->status == 'OnProgress'){
+                                                          echo 'bg-secondary';
+                                                      }else if ($datastatus->status == 'Continued'){
+                                                          echo 'bg-info';
+                                                      } ?>"><strong class="text-light"><?php echo $datastatus->status ?></strong></td>
                                                     </tr>
                                                        <?php } ?>
                                                   </tbody>
@@ -97,7 +103,7 @@
                                             
                                             <td>
                                                 <div>
-                                                <?php if ($data->status == 'OnProgress'): ?>
+                                                <?php if ($data->status_dokumen == 'OnProgress'): ?>
                                                     <div class="">
                                                         <button type="button" class="btn btn-success w-xs btn-md open-homeEvents-reject" data-bs-toggle="modal" data-bs-target="#reject" data-id="<?php echo $data->id_dokumen ?>">Diterima</button>
                                                         <button type="button" id="accept" class="btn btn-primary btn-md w-xs open-homeEvents" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="<?php echo $data->id_dokumen ?>">Lanjutkan dokumen</button>
@@ -193,8 +199,9 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('direksi/acceptdokumen/') ?>"> 
-                                                        <input type="hidden" id="id_dokumenreject" name="id_dokumen">
+                                                    <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('direksi/acceptdokumen/') ?>">
+                                                        <input type="hidden" name="id_users" value="<?php echo $this->ion_auth->user()->row()->id ?>">
+                                                        <input type="hidden" id="id_dokumenaccept" name="id_dokumen">
                                                     <div class="form-group mb-3">
                                                         <label for="exampleFormControlTextarea1">Keterangan</label>
                                                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="keterangan"></textarea>
@@ -256,7 +263,7 @@
 
       $(document).on("click", ".open-homeEvents-reject", function () {
      var eventId = $(this).data('id');
-     $("#id_dokumenreject").val(eventId);
+     $("#id_dokumenaccept").val(eventId);
 });
    
 

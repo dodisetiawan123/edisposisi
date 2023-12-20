@@ -61,11 +61,11 @@
                                 <table id="datatable" class="table table-bordered table-hover dt-responsive w-100">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>No</th>
-                                            <th style="max-width:250px">Detail</th>
+                                            <th style="max-width:20px">No</th>
+                                            <th style="max-width:270px">Detail</th>
                                             <th style="max-width:100px">Lampiran</th>
-                                            <th style="max-width:200px">Status</th>
-                                            <th>Aksi</th>
+                                            <th style="max-width:220px">Status</th>
+                                            <th style="min-width:210px">Pilihan</th>
                                         </tr>
                                     </thead>
 
@@ -79,7 +79,7 @@
                                                 <strong>Pengirim : </strong><?php echo $data->nama_pengirim; ?> <br>
                                                 <strong>No Surat :</strong> <?php echo $data->no_surat; ?><br>
                                                 <strong> No Agenda :</strong> <?php echo $data->no_agenda; ?> <br>
-                                                <strong>Tanggal  : </strong><?php echo $data->tanggal; ?><br>
+                                                <strong>Diterima Tanggal  : </strong><?php echo $data->tanggal; ?><br>
                                                 <strong>Perihal  : </strong><?php echo $data->perihal; ?>
                                             </td>
                                             <td>
@@ -97,7 +97,13 @@
                                                      <?php foreach ($model->get_statusdokumen($data->id_dokumen) as $datastatus) { ?>
                                                     <tr>
                                                       <td><?php echo $datastatus->first_name.' '.$datastatus->last_name; ?></td>
-                                                      <td><?php echo $datastatus->status ?></td>
+                                                      <td style="width: 80px;" class="<?php if ($datastatus->status == 'Accepted') {
+                                                          echo 'bg-success';
+                                                      } else if ($datastatus->status == 'OnProgress'){
+                                                          echo 'bg-secondary';
+                                                      }else if ($datastatus->status == 'Continued'){
+                                                          echo 'bg-info';
+                                                      } ?>"><strong class="text-light"><?php echo $datastatus->status ?></strong></td>
                                                     </tr>
                                                        <?php } ?>
                                                   </tbody>
@@ -169,7 +175,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row mb-4">
-                                                                                    <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
+                                                                                    <label for="tanggal" class="col-sm-3 col-form-label">Diterima Tanggal</label>
                                                                                     <div class="col-sm-9">
                                                                                         <input class="form-control" name="tanggal" type="date" value="<?php echo date("Y-m-d"); ?>" id="tanggal" required>
                                                                                     </div>
