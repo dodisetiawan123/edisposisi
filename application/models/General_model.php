@@ -12,7 +12,7 @@ class General_model extends CI_Model {
 
     public function get_dokumen($id_users)
     {
-        $this->db->select('dokumen.id_dokumen,dokumen.nama_pengirim,dokumen.no_surat,dokumen.no_agenda,dokumen.tanggal,dokumen.perihal,dokumen.file_dokumen,dokumen.status,dokumen_user.keterangan');
+        $this->db->select('dokumen.id_dokumen,dokumen.nama_pengirim,dokumen.no_surat,dokumen.no_agenda,dokumen.tanggal,dokumen.perihal,dokumen.file_dokumen,dokumen.status,dokumen_user.keterangan,dokumen_user.status as status_dokumen');
         $this->db->from('dokumen');
         $this->db->join('dokumen_user', 'dokumen_user.id_dokumen = dokumen.id_dokumen', 'left' );
         $this->db->where('dokumen_user.id_users', $id_users);
@@ -35,12 +35,11 @@ class General_model extends CI_Model {
 
      public function get_statusdokumen($id_dokumen)
     {
-        $this->db->select('users.first_name,users.last_name');
+        $this->db->select('users.first_name,users.last_name,dokumen_user.status');
         $this->db->from('users');
         $this->db->join('dokumen_user', 'dokumen_user.id_users = users.id', 'left' );
         $this->db->join('users_groups', 'users_groups.user_id = users.id', 'left' );
         $this->db->where('id_dokumen', $id_dokumen);
-        $this->db->where('group_id', 2);
         $query=$this->db->get();
         return $query->result();
     }
@@ -57,6 +56,14 @@ class General_model extends CI_Model {
     {
          $this->db->where('id_dokumen', $id_dokumen);
          $this->db->update('dokumen', $data);
+            
+    }
+
+       public function updatestatusdokumenuser($data,$id_dokumen,$id_users)
+    {
+         $this->db->where('id_dokumen', $id_dokumen);
+         $this->db->where('id_users', $id_users);
+         $this->db->update('dokumen_user', $data);
             
     }
 

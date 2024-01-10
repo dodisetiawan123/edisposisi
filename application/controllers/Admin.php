@@ -221,14 +221,11 @@ class Admin extends CI_Controller {
 ".$data_users['first_name'].' '.$data_users['last_name']." 
 
 Dokumen disposisi baru saja ditambahkan dengan informasi berikut ini :
-
 *Pengirim* : ".$data_dokumen['nama_pengirim']." 
-*No Agenda* : ".$data_dokumen['no_agenda']." 
-*Tanggal* : ".$data_dokumen['tanggal']." 
+*Tanggal Diterima* : ".$data_dokumen['tanggal']." 
 *Perihal* : ".$data_dokumen['perihal']."
 
 Silahkan klik link di bawah ini untuk detail informasi dan tindakan lebih lanjut :
-
 ".$url."
 
 Terimakasih";

@@ -100,9 +100,30 @@
                                                     <td>
                                                         <strong>Ditujukan ke</strong> 
                                                     </td>
-                                                    <td>: <?php foreach ($model->get_statusdokumengm($dokumen->id_dokumen) as $datastatus) {
-                                                    echo $datastatus->first_name.' '.$datastatus->last_name;
-                                                } ?></td>
+                                                    <td>
+                                                <table class="table table-bordered table-sm">
+                                                  <thead>
+                                                    <tr>
+                                                      <th scope="col">Tujuan dokumen</th>
+                                                      <th scope="col">Status</th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                <?php foreach ($model->get_statusdokumen($data->id_dokumen) as $datastatus) { ?>
+                                                    <tr>
+                                                      <td><?php echo $datastatus->first_name.' '.$datastatus->last_name; ?></td>
+                                                      <td style="width: 80px;" class="<?php if ($datastatus->status == 'Accepted') {
+                                                          echo 'bg-success';
+                                                      } else if ($datastatus->status == 'OnProgress'){
+                                                          echo 'bg-secondary';
+                                                      }else if ($datastatus->status == 'Continued'){
+                                                          echo 'bg-info';
+                                                      } ?>"><strong class="text-light"><?php echo $datastatus->status ?></strong></td>
+                                                    </tr>
+                                                       <?php } ?>
+                                                  </tbody>
+                                                </table>
+                                            </td>
                                                 </tr>
                                                  <tr>
                                                     <td>

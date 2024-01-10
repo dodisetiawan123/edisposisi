@@ -46,10 +46,20 @@ class Direksi_model extends CI_Model {
 
      public function get_statusdokumen($id_dokumen)
     {
-        $this->db->select('users.first_name,users.last_name,dokumen_user.status');
+        $this->db->select('users.first_name,users.last_name,dokumen_user.status,users.id');
         $this->db->from('users');
         $this->db->join('dokumen_user', 'dokumen_user.id_users = users.id', 'left' );
         $this->db->join('users_groups', 'users_groups.user_id = users.id', 'left' );
+        $this->db->where('id_dokumen', $id_dokumen);
+        $query=$this->db->get();
+        return $query->result();
+    }
+
+     public function requser($id_dokumen)
+    {
+        $this->db->select('users.id');
+        $this->db->from('users');
+        $this->db->join('dokumen_user', 'dokumen_user.id_users = users.id', 'left' );
         $this->db->where('id_dokumen', $id_dokumen);
         $query=$this->db->get();
         return $query->result();
@@ -100,7 +110,7 @@ class Direksi_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function get_datadokumen($id_dokumen)
+    public function get_datadokumen($id_dokumen,$id_userslogin)
     {
         $this->db->select('dokumen.nama_pengirim,dokumen.no_agenda,dokumen.tanggal,dokumen.perihal,dokumen.token,users.first_name,users.last_name');
         $this->db->from('dokumen');
@@ -108,7 +118,8 @@ class Direksi_model extends CI_Model {
         $this->db->join('users', 'dokumen_user.id_users = users.id', 'left' );
         $this->db->join('users_groups', 'users_groups.user_id = users.id', 'left' );
         $this->db->where('dokumen.id_dokumen', $id_dokumen);
-        $this->db->where('group_id', 2);
+        $this->db->where('users.id', $id_userslogin);
+        // $this->db->where('group_id', 2);
         $query=$this->db->get();
         return $query->row_array();
     }

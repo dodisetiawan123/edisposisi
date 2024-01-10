@@ -72,7 +72,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <strong>Tanggal </strong> 
+                                                        <strong>Tanggal Diterima</strong> 
                                                     </td>
                                                     <td>: <?php echo $dokumen->tanggal ?></td>
                                                 </tr>
@@ -82,33 +82,42 @@
                                                     </td>
                                                     <td>: <?php echo $dokumen->perihal ?></td>
                                                 </tr>
-                                                <tr>
-                                                    <td>
-                                                        <strong>Status Dokumen </strong> 
-                                                    </td>
-                                                    <td>: <?php echo $dokumen->status ?></td>
-                                                </tr>
-                                                     <tr>
-                                                    <td>
-                                                        <strong>Requestor</strong> 
-                                                    </td>
-                                                    <td>: <?php foreach ($model->get_statusdokumen($dokumen->id_dokumen) as $datastatus) {
-                                                    echo $datastatus->first_name.' '.$datastatus->last_name;
-                                                } ?></td>
-                                                </tr>
                                                  <tr>
                                                     <td>
                                                         <strong>Ditujukan ke</strong> 
                                                     </td>
-                                                    <td>: <?php foreach ($model->get_statusdokumengm($dokumen->id_dokumen) as $datastatus) {
-                                                    echo $datastatus->first_name.' '.$datastatus->last_name;
-                                                } ?></td>
+                                                   <td>
+                                                <table class="table table-bordered table-sm">
+                                                  <thead>
+                                                    <tr>
+                                                      <th scope="col">Tujuan dokumen</th>
+                                                      <th scope="col">Status</th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                <?php foreach ($model->get_statusdokumen($dokumen->id_dokumen) as $datastatus) { ?>
+                                                    <tr>
+                                                      <td><?php echo $datastatus->first_name.' '.$datastatus->last_name; ?></td>
+                                                      <td style="width: 80px;" class="<?php if ($datastatus->status == 'Finished') {
+                                                          echo 'bg-success';
+                                                      } else if ($datastatus->status == 'OnAction'){
+                                                          echo 'bg-danger';
+                                                      } else if ($datastatus->status == 'OnProgress'){
+                                                          echo 'bg-secondary';
+                                                      }else if ($datastatus->status == 'Continued'){
+                                                          echo 'bg-info';
+                                                      } ?>"><strong class="text-light"><?php echo $datastatus->status ?></strong></td>
+                                                    </tr>
+                                                       <?php } ?>
+                                                  </tbody>
+                                                </table>
+                                            </td>
                                                 </tr>
                                                  <tr>
                                                     <td>
                                                         <strong>Lampiran</strong> 
                                                     </td>
-                                                    <td>: <a href="<?php echo base_url("filedoc/".$dokumen->file_dokumen) ?>" target="_blank"><button type="button" class="btn btn-secondary btn-rounded waves-effect waves-light">Preview</button></a></td>
+                                                    <td>: <a href="<?php echo base_url("filedoc/".$dokumen->file_dokumen) ?>" target="_blank"><button type="button" class="btn btn-secondary waves-effect waves-light">Lihat</button></a></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -119,12 +128,19 @@
 
                                 <div class="d-print-none mt-3">
                                     <div class="float-end">
-                                         <?php if ($dokumen->status == 'OnProgress BOD'): ?>
-                                                    <div class="btn-group btn-group-example mb-3" role="group">
-                                                        <button type="button" id="accept" class="btn btn-success w-xs open-homeEvents" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="<?php echo $dokumen->id_dokumen ?>">Accept</button>
-                                                        <button type="button" class="btn btn-danger w-xs" data-bs-toggle="modal" data-bs-target="#reject">Reject</button>
+                                         <?php if ($dokumen->status == 'OnProgress'): ?>
+                                                    <div class="">
+                                                        <button type="button" class="btn btn-info w-xs btn-md open-homeEvents-reject" data-bs-toggle="modal" data-bs-target="#reject" data-id="<?php echo $dokumen->id_dokumen ?>">Diterima</button>
+                                                        <?php if ($dokumen->group_id != '3') { ?>
+                                                        <button type="button" id="accept" class="btn btn-primary btn-md w-xs open-homeEvents" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="<?php echo $dokumen->id_dokumen ?>">Lanjutkan dokumen</button>
+                                                        <?php } ?>
                                                     </div>
                                                     
+                                                <?php endif ?>
+                                        <?php if ($dokumen->status == 'OnAction'): ?>
+                                                    <div class="">
+                                                        <button type="button" class="btn btn-success w-xs btn-md open-homeEvents-finish" data-bs-toggle="modal" data-bs-target="#finish" data-id="<?php echo $dokumen->id_dokumen ?>">Selesai</button>
+                                                    </div>       
                                          <?php endif ?>
                                     </div>
                                 </div>
@@ -140,90 +156,127 @@
 </div>
 <!-- END layout-wrapper -->
 
- <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+       <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                             <div class="modal-content">
 
-                                            <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('dokumen/disposisi/') ?>"> 
+                                            <form enctype="multipart/form-data" name="lanjutkan" onsubmit='disableButton()' accept-charset="utf-8" method="post" action="<?php echo site_url('dokumen/disposisi/') ?>"> 
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="staticBackdropLabel">Lanjutkan Dokumen</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                   
                                                 </div>
                                                 <div class="modal-body">    
-                                                     <input type="hidden" id="id_dokumen" name="id_dokumen" value="<?php echo $dokumen->
-                                                     id_dokumen ?>">
-                                                     <input type="hidden" name="token" value="<?php echo $dokumen->token ?>">
+                                                     <input type="hidden" id="id_dokumen" name="id_dokumen">
+                                                     <input type="hidden" name="token" value="<?php echo $dokumen->gmtoken ?>">
+                                                     <input type="hidden" name="id_users_login" value="<?php echo $dokumen->id_users ?>">
                                                     <div class="form-group mb-3">
                                                         <label for="exampleFormControlTextarea1">Keterangan</label>
-                                                        <textarea class="form-control" name="keterangan" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                        <textarea class="form-control" name="keterangan" id="exampleFormControlTextarea1" rows="3" required></textarea>
                                                     </div>
+                                                    <div class="row">
+                                                        <label for="exampleFormControlTextarea1">Lanjutkan ke-</label>
+                                                        <div class="col-md-6">
+                                                             <h5 class="font-size-14 mb-2">DIREKSI
+                                                                </h5>
                                                     <div class="form-group">
-                                                    <label for="exampleFormControlSelect1">Diteruskan ke- </label>
-                                                    <select class="form-control" name="id_users" id="exampleFormControlSelect1">
-                                                       <?php foreach ($users as $data) {?>
-                                                      <option value="<?php echo $data->id ?>"><?php echo $data->first_name.' '.$data->last_name.' ('.$data->email.')' ?></option>
+                                                         <?php foreach ($users as $data) {?>
+                                                        <div class="form-check">
+                                                                    <input class="form-check-input" name="id_users[]" type="checkbox" id="<?php echo $data->id ?>" value="<?php echo $data->id ?>">
+                                                                    <label class="form-check-label" for="<?php echo $data->id ?>">
+                                                                        <?php echo $data->first_name.' '.$data->last_name.'('.$data->email.')' ?>
+                                                                    </label>
+                                                        </div>
                                                         <?php } ?>
-                                                    </select>
-                                                  </div>
+                                                    </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <h5 class="font-size-14 mb-2">GM BIRO/DIVISI
+                                                                </h5>
+                                                    <div class="form-group">
+                                                         <?php foreach ($usersgm as $data) {?>
+                                                        <div class="form-check">
+                                                                    <input class="form-check-input" name="id_users[]" type="checkbox" id="<?php echo $data->id ?>" value="<?php echo $data->id ?>">
+                                                                    <label class="form-check-label" for="<?php echo $data->id ?>">
+                                                                        <?php echo $data->first_name.' '.$data->last_name.'('.$data->email.')' ?>
+                                                                    </label>
+                                                        </div>
+                                                        <?php } ?>
+                                                    </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-primary">Lanjutkan</button>
+                                                    <button type="button" class="btn btn-light" id="close" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary" id="btn">Lanjutkan</button>
                                                 </div>
                                             </form>
                                             </div>
                                         </div>
                                     </div>
 
+
                                     <div class="modal fade" id="reject" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                                             <div class="modal-content">
+                                                 <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('dokumen/acceptdokumen/') ?>">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="staticBackdropLabel">Reject Dokumen</h5>
+
+                                                    <h5 class="modal-title" id="staticBackdropLabel">Terima dokumen</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form>
+                                                   <div class="alert alert-dismissible fade show px-4 mb-0 text-center" role="alert">
+                                                            <i class="mdi mdi-book d-block display-2 mt-2 mb-2 text-info"></i>
+                                                            <h5> <p>Terima dokumen?</p></h5>
+                                                           
+                                                        </div>
+                                                        <input type="hidden" name="id_users" value="<?php echo $dokumen->id_users ?>">
+                                                        <input type="hidden" id="id_dokumenaccept" name="id_dokumen">
+                                                        <input type="hidden" name="token" value="<?php echo $dokumen->gmtoken ?>">
                                                     <div class="form-group mb-3">
-                                                        <label for="exampleFormControlTextarea1">Keterangan</label>
-                                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                                                     </div>
-                                                  </form>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-danger">Reject</button>
+                                                    <button type="submit" class="btn btn-info">Diterima</button>
                                                 </div>
+
+                                                  </form>
                                             </div>
                                         </div>
                                     </div>
 
-                                     <div class="modal fade" id="accept" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal fade" id="finish" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                                             <div class="modal-content">
-                                                <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('dokumen/acceptdokumen/') ?>">
+                                                 <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('dokumen/finishdokumen/') ?>">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="staticBackdropLabel">Accept dokumen?</h5>
+
+                                                    <h5 class="modal-title" id="staticBackdropLabel">Terima dokumen</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <p>
-                                                        <h5>
-                                                    <input type="hidden" name="token" value="<?php echo $dokumen->
-                                                     token ?>">
-                                                    <input type="hidden" name="id_dokumen" id="id_dokumen" value="<?php echo $dokumen->
-                                                     id_dokumen ?>"></h5>
-                                                    </p>
+                                                     <div class="alert alert-dismissible fade show px-4 mb-0 text-center" role="alert">
+                                                            <i class="mdi mdi-book-check d-block display-2 mt-2 mb-2 text-success"></i>
+                                                            <h5> <p>Selesaikan dokumen?</p></h5>
+                                                           
+                                                        </div>
+                                                   
+                                                        <input type="hidden" name="id_users" value="<?php echo $dokumen->id_users ?>">
+                                                        <input type="hidden" id="id_dokumenfinish" name="id_dokumen">
+                                                        <input type="hidden" name="token" value="<?php echo $dokumen->gmtoken ?>">
+                                                    <div class="form-group mb-3">
+                                                    </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-success">Accept</button>
+                                                    <button type="submit" class="btn btn-success">Selesaikan</button>
                                                 </div>
-                                                </form>
+
+                                                  </form>
                                             </div>
                                         </div>
                                     </div>
-
 <!-- Right Sidebar -->
 <?php include 'detail_layouts/right-sidebar.php'; ?>
 <!-- /Right-bar -->
@@ -259,9 +312,49 @@
 
 <!-- App js -->
 <script src="<?php echo base_url('assets/js/app.js') ?>"></script>
+<script>
+    function disableButton() {
+        var btn = document.getElementById('btn');
+        btn.disabled = true;
+        btn.innerText = 'Posting...'
+    }
 </script>
 <script type="text/javascript">
-  
+    $(document).on("click", ".open-homeEvents", function () {
+     var eventId = $(this).data('id');
+     $("#id_dokumen").val(eventId);
+
+     $.ajax({ 
+            type: 'POST', 
+            url: '<?php echo site_url('dokumen/requser/') ?>', 
+            data: { id_dokumen:eventId }, 
+            dataType: 'json',
+            success: function (data) { 
+                $.each(data, function(index, element) {
+                   $('#'+element.id).attr("checked", "checked");
+                   $('#'+element.id).attr("disabled", "disabled");
+                });
+            }
+        });
+    });
+
+    $(document).on("click", "#close", function () {
+     $('.form-check-input').attr("checked", false);
+     $('.form-check-input').attr("disabled", false);
+     
+    });
+
+      $(document).on("click", ".open-homeEvents-reject", function () {
+     var eventId = $(this).data('id');
+     $("#id_dokumenaccept").val(eventId);
+});
+
+       $(document).on("click", ".open-homeEvents-finish", function () {
+     var eventId = $(this).data('id');
+     $("#id_dokumenfinish").val(eventId);
+});
+   
+
     <?php if($this->session->flashdata('done')){ ?>
     $(document).ready(function(){
          Swal.fire(

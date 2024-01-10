@@ -97,9 +97,11 @@
                                                      <?php foreach ($model->get_statusdokumen($data->id_dokumen) as $datastatus) { ?>
                                                     <tr>
                                                       <td><?php echo $datastatus->first_name.' '.$datastatus->last_name; ?></td>
-                                                      <td style="width: 80px;" class="<?php if ($datastatus->status == 'Accepted') {
+                                                      <td style="width: 80px;" class="<?php if ($datastatus->status == 'Finished') {
                                                           echo 'bg-success';
-                                                      } else if ($datastatus->status == 'OnProgress'){
+                                                      } else if ($datastatus->status == 'OnAction'){
+                                                          echo 'bg-danger';
+                                                      }else if ($datastatus->status == 'OnProgress'){
                                                           echo 'bg-secondary';
                                                       }else if ($datastatus->status == 'Continued'){
                                                           echo 'bg-info';
@@ -223,7 +225,7 @@
                                     <div class="modal fade" id="lanjutkan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                             <div class="modal-content">
-                                            <form enctype="multipart/form-data" name="lanjutkan" accept-charset="utf-8" method="post" action="<?php echo site_url('admin/disposisi/') ?>"> 
+                                            <form enctype="multipart/form-data" name="lanjutkan" onsubmit='disableButton()' accept-charset="utf-8" method="post" action="<?php echo site_url('admin/disposisi/') ?>" > 
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="staticBackdropLabel">Lanjutkan Dokumen</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -274,7 +276,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-primary">Lanjutkan</button>
+                                                    <button type="submit" class="btn btn-primary" id="btn">Lanjutkan</button>
                                                 </div>
                                             </form>
                                             </div>
@@ -322,12 +324,21 @@
 
 <!-- App js -->
 <script src="<?php echo base_url('assets/js/app.js') ?>"></script>
+<script>
+    function disableButton() {
+        var btn = document.getElementById('btn');
+        btn.disabled = true;
+        btn.innerText = 'Posting...'
+    }
+</script>
 
 <script type="text/javascript">
       $(document).on("click", ".open-homeEvents", function () {
              var eventId = $(this).data('id');
              $("#id_dokumen").val(eventId);
         });
+
+    
 
     <?php if($this->session->flashdata('done')){ ?>
     $(document).ready(function(){

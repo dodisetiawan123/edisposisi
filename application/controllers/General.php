@@ -66,14 +66,40 @@ class General extends CI_Controller {
 		}
 		else
 		{
-			
-
 			$data_status = array(
-				'status' => 'OnAction GM'
+				'status' => 'OnAction'
 			);
 
 			$id_dokumen = $this->input->post('id_dokumen');
-			$this->general_model->updatestatus($data_status,$id_dokumen);		
+			$id_users = $this->input->post('id_users');
+			$this->general_model->updatestatusdokumenuser($data_status,$id_dokumen,$id_users);		
+
+            $this->session->set_flashdata('done', 'Data berhasil tersimpan');
+            redirect('general/list_surat');
+		}
+	}
+
+	public function finishdokumen()
+	{
+		if (!$this->ion_auth->logged_in())
+		{
+			// redirect them to the login page
+			redirect('auth/login', 'refresh');
+		}
+		else if ($this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
+		{
+			// redirect them to the home page because they must be an administrator to view this
+			show_error('You must be an Member to view this page.');
+		}
+		else
+		{
+			$data_status = array(
+				'status' => 'Finished'
+			);
+
+			$id_dokumen = $this->input->post('id_dokumen');
+			$id_users = $this->input->post('id_users');
+			$this->general_model->updatestatusdokumenuser($data_status,$id_dokumen,$id_users);		
 
             $this->session->set_flashdata('done', 'Data berhasil tersimpan');
             redirect('general/list_surat');

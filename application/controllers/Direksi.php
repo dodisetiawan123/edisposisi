@@ -53,6 +53,21 @@ class Direksi extends CI_Controller {
 		}
 	}
 
+	public function requser()
+	{
+		if (!$this->ion_auth->logged_in())
+		{
+			// redirect them to the login page
+			redirect('auth/login', 'refresh');
+		}
+		else if (!$this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
+		{
+			$id_dokumen = $this->input->post('id_dokumen');
+			$data = $this->direksi_model->requser($id_dokumen);
+			echo json_encode($data);
+		}
+	}
+
 	public function disposisi()
 	{
 		if (!$this->ion_auth->logged_in())
@@ -69,15 +84,21 @@ class Direksi extends CI_Controller {
 		{
 			$id_users = $this->input->post('id_users');
 			$id_dokumen = $this->input->post('id_dokumen');
+			$id_userslogin =  $this->ion_auth->user()->row()->id;
+			if (is_null($id_users)) {
+				$this->session->set_flashdata('error', 'Data gagal terkirim');
+				 redirect('direksi/list_surat');
+			}
 
 			foreach ($id_users as $user) {
 				$token = $this->token();
-				$response = $this->sendwa($user,$id_dokumen,$token);
+				$response = $this->sendwa($user,$id_dokumen,$token,$id_userslogin);
 				$responsedata = json_decode($response, true);
 
 			if ($responsedata['status'] == true) {
 				$data_dokumen = array(
 				'id_users' => $user,
+				'id_users_requestor' => $id_userslogin,
 				'id_dokumen' => $this->input->post('id_dokumen'),
 				'keterangan' => $this->input->post('keterangan'),
 				'status' => 'OnProgress',
@@ -99,7 +120,6 @@ class Direksi extends CI_Controller {
 			$data_status = array(
 				'status' => 'Continued'
 			);
-			$id_userslogin =  $this->ion_auth->user()->row()->id ;
 			$this->direksi_model->updatestatusdokumenuser($data_status,$id_dokumen,$id_userslogin);		
 
             $this->session->set_flashdata('done', 'Data berhasil tersimpan');
@@ -167,8 +187,34 @@ class Direksi extends CI_Controller {
 		else
 		{
 			$data_status = array(
-				'status' => 'Accepted',
-				'keterangan' => $this->input->post('keterangan')
+				'status' => 'OnAction'
+			);
+
+			$id_dokumen = $this->input->post('id_dokumen');
+			$id_users = $this->input->post('id_users');
+			$this->direksi_model->updatestatusdokumenuser($data_status,$id_dokumen,$id_users);		
+
+            $this->session->set_flashdata('done', 'Data berhasil tersimpan');
+            redirect('direksi/list_surat');
+		}
+	}
+
+	public function finishdokumen()
+	{
+		if (!$this->ion_auth->logged_in())
+		{
+			// redirect them to the login page
+			redirect('auth/login', 'refresh');
+		}
+		else if ($this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
+		{
+			// redirect them to the home page because they must be an administrator to view this
+			show_error('You must be an Member to view this page.');
+		}
+		else
+		{
+			$data_status = array(
+				'status' => 'Finished'
 			);
 
 			$id_dokumen = $this->input->post('id_dokumen');
@@ -181,7 +227,7 @@ class Direksi extends CI_Controller {
 	}
 	
 
-	public function sendwa($id_users,$id_dokumen,$token)
+	public function sendwa($id_users,$id_dokumen,$token,$id_userslogin)
 			{
 				if (!$this->ion_auth->logged_in())
 				{
@@ -191,26 +237,21 @@ class Direksi extends CI_Controller {
 				else if (!$this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
 				{
 					$data_users = $this->direksi_model->get_datausers($id_users);
-					$data_dokumen = $this->direksi_model->get_datadokumen($id_dokumen);
-					$url = site_url('dokumen/gmview/'.$token);
+					$data_dokumen = $this->direksi_model->get_datadokumen($id_dokumen,$id_userslogin);
+					$url = site_url('dokumen/view/'.$token);
 					
 
 					$message = "*Kepada Yth.*
 ".$data_users['first_name'].' '.$data_users['last_name']." 
 
 Dokumen disposisi baru saja ditambahkan dengan informasi berikut ini :
-
 *Pengirim* : ".$data_dokumen['nama_pengirim']." 
-*No Agenda* : ".$data_dokumen['no_agenda']." 
-*Tanggal* : ".$data_dokumen['tanggal']." 
+*Tanggal Diterima* : ".$data_dokumen['tanggal']." 
 *Perihal* : ".$data_dokumen['perihal']."
-
-Informasi requestor
-*Requestor* : ".$data_dokumen['first_name'].' '.$data_dokumen['last_name']."
-*Catatan* : ".$this->input->post('keterangan')."
+*Requestor* : ".$data_dokumen['first_name']." ".$data_dokumen['last_name']."
+*Catatan Requestor* : ".$this->input->post('keterangan')."
 
 Silahkan klik link di bawah ini untuk detail informasi dan tindakan lebih lanjut :
-
 ".$url."
 
 Terimakasih";
@@ -253,10 +294,8 @@ Terimakasih";
 ".$data_users['first_name'].' '.$data_users['last_name']." 
 
 Dokumen disposisi baru saja direject dengan informasi berikut ini :
-
 *Pengirim* : ".$data_dokumen['nama_pengirim']." 
-*No Agenda* : ".$data_dokumen['no_agenda']." 
-*Tanggal* : ".$data_dokumen['tanggal']." 
+*Tanggal Diterima* : ".$data_dokumen['tanggal']." 
 *Perihal* : ".$data_dokumen['perihal']."
 
 Informasi requestor
