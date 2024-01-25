@@ -594,7 +594,7 @@ class Auth extends CI_Controller
 	*/
 	public function redirectUser(){
 		if ($this->ion_auth->is_admin()){
-			redirect('auth', 'refresh');
+			redirect('auth/login', 'refresh');
 		}
 		redirect('/', 'refresh');
 	}
@@ -655,6 +655,8 @@ class Auth extends CI_Controller
 				if ($this->input->post('password'))
 				{
 					$data['password'] = $this->input->post('password');
+					$data['change_pass'] = '1';
+
 				}
 
 				// Only allow updating groups if user is admin
@@ -677,6 +679,7 @@ class Auth extends CI_Controller
 				// check to see if we are updating the user
 				if ($this->ion_auth->update($user->id, $data))
 				{
+
 					// redirect them back to the admin page if admin, or to the base url if non admin
 					$this->session->set_flashdata('message', $this->ion_auth->messages());
 					$this->redirectUser();
@@ -739,7 +742,7 @@ class Auth extends CI_Controller
 			'type' => 'password'
 		];
 
-		$this->_render_page('auth/edit_user', $this->data);
+		$this->_render_page('edit_user', $this->data);
 	}
 
 	/**

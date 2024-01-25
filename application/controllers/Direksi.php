@@ -21,6 +21,8 @@ class Direksi extends CI_Controller {
 		{
 			// redirect them to the login page
 			redirect('auth/login', 'refresh');
+		}else if ($this->ion_auth->user()->row()->change_pass == 0) {
+			redirect('auth/edit_user/'.$this->ion_auth->user()->row()->id);
 		}
 		else if (!$this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
 		{

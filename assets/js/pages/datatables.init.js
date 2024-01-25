@@ -7,7 +7,9 @@ File: Datatables Js File
 */
 
 $(document).ready(function() {
-    $('#datatable').DataTable();
+    $('#datatable').DataTable({
+        pageLength : 5
+    });
 
     //Buttons examples
     // var table = $('#datatable-buttons').DataTable({

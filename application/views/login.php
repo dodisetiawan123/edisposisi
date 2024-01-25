@@ -23,7 +23,7 @@
                         <div class="d-flex flex-column h-100">
                             <div class="auth-content my-auto">
                                 <div class="text-center">
-                                    <h5 class="mb-0">Login E-Dispos</h5>
+                                    <h5 class="mb-0">LOGIN E-DISPOS</h5>
                                     <p class="text-muted mt-2">Silahkan login untuk melanjutkan.</p>
                                 </div>
                                 

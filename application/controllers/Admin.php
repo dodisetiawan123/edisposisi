@@ -26,6 +26,9 @@ class Admin extends CI_Controller {
 			// redirect them to the home page because they must be an administrator to view this
 			show_error('You must be an administrator to view this page.');
 		}
+		else if ($this->ion_auth->user()->row()->change_pass == 0) {
+			redirect('auth/edit_user/'.$this->ion_auth->user()->row()->id);
+		}
 		else
 		{
 			$this->data['dokumen'] = $this->admin_model->get_dokumen();
@@ -220,7 +223,7 @@ class Admin extends CI_Controller {
 					$message = "*Kepada Yth.*
 ".$data_users['first_name'].' '.$data_users['last_name']." 
 
-Dokumen disposisi baru saja ditambahkan dengan informasi berikut ini :
+Dokumen disposisi ditambahkan dengan informasi berikut ini :
 *Pengirim* : ".$data_dokumen['nama_pengirim']." 
 *Tanggal Diterima* : ".$data_dokumen['tanggal']." 
 *Perihal* : ".$data_dokumen['perihal']."

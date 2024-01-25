@@ -123,6 +123,41 @@
                                 </table>
 
                             </div>
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6>Keterangan status dokumen user :</h6>
+                                         <table class="table table-bordered table-sm">
+                                          <thead>
+                                            <tr>
+                                              <th scope="col" style="width:100px">Status</th>
+                                              <th scope="col" style="">Keterangan status</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>   
+                                            <tr>
+                                              <td class="bg-secondary"><strong class="text-light">OnProgress</strong></td>
+                                              <td>Dokumen diserahkan ke user</td>
+                                            </tr>
+                                            <tr>
+                                              <td class="bg-info"><strong class="text-light">Continued</strong></td>
+                                              <td>Dokumen sudah di lanjutkan ke user lain</td>
+                                            </tr>
+                                            <tr>
+                                              <td class="bg-danger"><strong class="text-light">OnAction</strong></td>
+                                              <td>Permintaan sedang di kerjakan</td>
+                                            </tr>
+                                            <tr>
+                                              <td class="bg-success"><strong class="text-light">Finished</strong></td>
+                                              <td>Permintaan selesai di kerjakan</td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                    
+                                   
+                            </div>
                         </div>
                     </div> <!-- end col -->
                 </div> <!-- end row -->
